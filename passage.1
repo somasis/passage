@@ -44,6 +44,9 @@ passage \- password store utilizing age for encryption
 \fI${XDG_DATA_HOME}/share/passage\fP, encrypting them with age(1). It is based in design off of pass(1),
 with some deviations from it when pass(1) is possibly a bit inconsistent and feature creep prone.
 .SH "COMMANDS"
+.sp
+When providing a password file as an argument, do not include the ".age" suffix.
+.sp
 \fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .RS 4
 Show a list of password files and directories, or show the contents of a password file.

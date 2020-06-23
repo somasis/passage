@@ -22,6 +22,9 @@ DESCRIPTION
        prone.
 
 COMMANDS
+       When providing a password file as an argument, do not include the
+       ".age" suffix.
+
        show [-c] [FILE/DIRECTORY...]
            Show a list of password files and directories, or show the contents
            of a password file.  Directories are listed with a trailing slash

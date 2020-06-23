@@ -24,6 +24,7 @@ with some deviations from it when pass(1) is possibly a bit inconsistent and fea
 
 == Commands
 
+When providing a password file as an argument, do not include the ".age" suffix.
 
 *show* [*-c*] [_FILE/DIRECTORY_...]::
     Show a list of password files and directories, or show the contents of a password file.
