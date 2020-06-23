@@ -43,6 +43,69 @@ passage \- password store utilizing age for encryption
 \fBpassage\fP is a password store. It allows for storing passwords within a directory, by default
 \fI${XDG_DATA_HOME}/share/passage\fP, encrypting them with age(1). It is based in design off of pass(1),
 with some deviations from it when pass(1) is possibly a bit inconsistent and feature creep prone.
+.SS "Goals"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
+Usage of age(1) rather than gpg(1). This helps to reduce the overall amount of cruft and bloat
+being used in cryptography programs, and while it\(cqs mostly a philosophical reason, it\(cqs the main
+reason this was written.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
+POSIX sh(1) compatibility. pass(1) depends on bash(1), and uses quite a lot of bashisms, making
+using it with other default system shells require a lot of changes to the code. \fBpassage\fP doesn\(cqt
+have any non\-POSIX compatible requirements, aside from age(1).
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
+A preference of printing easily machine\-readable content by default. pass(1)\(aqs output tends to be
+geared more towards human\-readability, which can occasionally be annoying for scripting and
+automated usage.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
+Avoidance of piece\-meal operations on password files. Most password editing operations, other
+than generating a new password, should just be done through a text editor.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
+Conforming to XDG specifications by default. pass(1) does not, though it can be made to.
+.RE
 .SH "COMMANDS"
 .sp
 When providing a password file as an argument, do not include the ".age" suffix.

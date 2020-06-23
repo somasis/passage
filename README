@@ -21,6 +21,29 @@ DESCRIPTION
        from it when pass(1) is possibly a bit inconsistent and feature creep
        prone.
 
+   Goals
+       •   Usage of age(1) rather than gpg(1). This helps to reduce the
+           overall amount of cruft and bloat being used in cryptography
+           programs, and while it’s mostly a philosophical reason, it’s the
+           main reason this was written.
+
+       •   POSIX sh(1) compatibility. pass(1) depends on bash(1), and uses
+           quite a lot of bashisms, making using it with other default system
+           shells require a lot of changes to the code. passage doesn’t have
+           any non-POSIX compatible requirements, aside from age(1).
+
+       •   A preference of printing easily machine-readable content by
+           default. pass(1)'s output tends to be geared more towards
+           human-readability, which can occasionally be annoying for scripting
+           and automated usage.
+
+       •   Avoidance of piece-meal operations on password files. Most password
+           editing operations, other than generating a new password, should
+           just be done through a text editor.
+
+       •   Conforming to XDG specifications by default. pass(1) does not,
+           though it can be made to.
+
 COMMANDS
        When providing a password file as an argument, do not include the
        ".age" suffix.
