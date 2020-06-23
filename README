@@ -101,7 +101,9 @@ ENVIRONMENT
 
        PASSWORD_STORE_DIR
            If set, this directory is used by convert, rather than pass(1)'s
-           own default, ~/.password-store.
+           own default, ~/.password-store. It’s not used if you provide
+           directories as arguments to convert, though.  This environment
+           variable is also used by pass(1), thus the reason it is used here.
 
 FILES
        ${XDG_DATA_HOME}/passage

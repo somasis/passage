@@ -172,7 +172,8 @@ If not specified, \fI${XDG_CONFIG_HOME}/passage/recipients\fP is used.
 \fIPASSWORD_STORE_DIR\fP
 .RS 4
 If set, this directory is used by \fBconvert\fP, rather than pass(1)\(aqs own default,
-\fI~/.password\-store\fP.
+\fI~/.password\-store\fP. It\(cqs not used if you provide directories as arguments to \fBconvert\fP, though.
+This environment variable is also used by pass(1), thus the reason it is used here.
 .RE
 .SH "FILES"
 .sp

@@ -87,7 +87,8 @@ _PASSAGE_RECIPIENTS_::
 
 _PASSWORD_STORE_DIR_::
     If set, this directory is used by *convert*, rather than pass(1)'s own default,
-    _~/.password-store_.
+    _~/.password-store_. It's not used if you provide directories as arguments to *convert*, though.
+    This environment variable is also used by pass(1), thus the reason it is used here.
 
 == Files
 
