@@ -57,22 +57,27 @@ _EDITOR_::
 
 _PASSAGE_DIR_::
     A directory containing the password store.
-    If not specified, *${XDG_DATA_HOME}/passage* is used instead.
+    If not specified, _${XDG_DATA_HOME}/passage_ is used instead.
 
 _PASSAGE_KEY_::
     A file path. This is the key used for encrypting passwords; your private key.
-    If not specified, *${XDG_CONFIG_HOME}/passage/privkey* is used.
+    If not specified, _${XDG_CONFIG_HOME}/passage/privkey_ is used.
 
 _PASSAGE_RECIPIENTS_::
-    A file path. This is the list of public keys that password files are encrypted *for*.
-    As in, this is what public keys should be able to decrypt password files.
-    If not specified, *${XDG_CONFIG_HOME}/passage/recipients* is used.
+    A file path. This is the list of public keys that password files are encrypted *for*; as in,
+    this is what public keys should be able to decrypt password files.
+    If not specified, _${XDG_CONFIG_HOME}/passage/recipients_ is used.
 
 _PASSWORD_STORE_DIR_::
     If set, this directory is used by *convert*, rather than pass(1)'s own default,
-    *~/.password-store*.'
+    _~/.password-store_.
 
 == Files
+
+_${XDG_DATA_HOME}/passage_::
+    The default location of the password store.
+    The location can be changed with _PASSAGE_DIR_.
+    By default, _XDG_DATA_HOME_ is set to *~/.local/share*.
 
 _${XDG_CONFIG_HOME}/passage/privkey_::
     The default location of the encrypting key, or private key.
@@ -84,12 +89,7 @@ _${XDG_CONFIG_HOME}/passage/recipients_::
     The location can be changed with _PASSAGE_RECIPIENTS_.
     By default _XDG_CONFIG_HOME_ is set to *~/.config*.
 
-_${XDG_DATA_HOME}/passage_::
-    The default location of the password store.
-    The location can be changed with _PASSAGE_DIR_.
-    By default, _XDG_DATA_HOME_ is set to *~/.local/share*.
-
-_${PASSAGE_DIR}/passage/*.age_::
+_${PASSAGE_DIR}/*.age_::
     Files encrypted with age(1).
 
 == Notes

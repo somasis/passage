@@ -100,28 +100,35 @@ The default editor used by the \fBedit\fP command. If not set, it defaults to vi
 \fIPASSAGE_DIR\fP
 .RS 4
 A directory containing the password store.
-If not specified, \fB${XDG_DATA_HOME}/passage\fP is used instead.
+If not specified, \fI${XDG_DATA_HOME}/passage\fP is used instead.
 .RE
 .sp
 \fIPASSAGE_KEY\fP
 .RS 4
 A file path. This is the key used for encrypting passwords; your private key.
-If not specified, \fB${XDG_CONFIG_HOME}/passage/privkey\fP is used.
+If not specified, \fI${XDG_CONFIG_HOME}/passage/privkey\fP is used.
 .RE
 .sp
 \fIPASSAGE_RECIPIENTS\fP
 .RS 4
-A file path. This is the list of public keys that password files are encrypted \fBfor\fP.
-As in, this is what public keys should be able to decrypt password files.
-If not specified, \fB${XDG_CONFIG_HOME}/passage/recipients\fP is used.
+A file path. This is the list of public keys that password files are encrypted \fBfor\fP; as in,
+this is what public keys should be able to decrypt password files.
+If not specified, \fI${XDG_CONFIG_HOME}/passage/recipients\fP is used.
 .RE
 .sp
 \fIPASSWORD_STORE_DIR\fP
 .RS 4
 If set, this directory is used by \fBconvert\fP, rather than pass(1)\(aqs own default,
-\fB~/.password\-store\fP.\(aq
+\fI~/.password\-store\fP.
 .RE
 .SH "FILES"
+.sp
+\fI${XDG_DATA_HOME}/passage\fP
+.RS 4
+The default location of the password store.
+The location can be changed with \fIPASSAGE_DIR\fP.
+By default, \fIXDG_DATA_HOME\fP is set to \fB~/.local/share\fP.
+.RE
 .sp
 \fI${XDG_CONFIG_HOME}/passage/privkey\fP
 .RS 4
@@ -137,14 +144,7 @@ The location can be changed with \fIPASSAGE_RECIPIENTS\fP.
 By default \fIXDG_CONFIG_HOME\fP is set to \fB~/.config\fP.
 .RE
 .sp
-\fI${XDG_DATA_HOME}/passage\fP
-.RS 4
-The default location of the password store.
-The location can be changed with \fIPASSAGE_DIR\fP.
-By default, \fIXDG_DATA_HOME\fP is set to \fB~/.local/share\fP.
-.RE
-.sp
-\fI${PASSAGE_DIR}/passage/*.age\fP
+\fI${PASSAGE_DIR}/*.age\fP
 .RS 4
 Files encrypted with age(1).
 .RE

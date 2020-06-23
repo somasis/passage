@@ -66,15 +66,20 @@ ENVIRONMENT
 
        PASSAGE_RECIPIENTS
            A file path. This is the list of public keys that password files
-           are encrypted for.  As in, this is what public keys should be able
+           are encrypted for; as in, this is what public keys should be able
            to decrypt password files.  If not specified,
            ${XDG_CONFIG_HOME}/passage/recipients is used.
 
        PASSWORD_STORE_DIR
            If set, this directory is used by convert, rather than pass(1)'s
-           own default, ~/.password-store.'
+           own default, ~/.password-store.
 
 FILES
+       ${XDG_DATA_HOME}/passage
+           The default location of the password store.  The location can be
+           changed with PASSAGE_DIR.  By default, XDG_DATA_HOME is set to
+           ~/.local/share.
+
        ${XDG_CONFIG_HOME}/passage/privkey
            The default location of the encrypting key, or private key.  The
            encrypting key can be changed with PASSAGE_KEY.  By default
@@ -85,12 +90,7 @@ FILES
            changed with PASSAGE_RECIPIENTS.  By default XDG_CONFIG_HOME is set
            to ~/.config.
 
-       ${XDG_DATA_HOME}/passage
-           The default location of the password store.  The location can be
-           changed with PASSAGE_DIR.  By default, XDG_DATA_HOME is set to
-           ~/.local/share.
-
-       ${PASSAGE_DIR}/passage/*.age
+       ${PASSAGE_DIR}/*.age
            Files encrypted with age(1).
 
 NOTES
