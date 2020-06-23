@@ -8,7 +8,7 @@ NAME
 SYNOPSIS
        passage show [-c] [FILE/DIRECTORY...]
 
-       passage convert
+       passage convert [DIRECTORY]
 
        passage generate [-l LENGTH] FILE
 
@@ -33,9 +33,11 @@ COMMANDS
                If you provide a path to a password directory, the directory is listed.
                If you provide no path of any sort, the entire password store is listed.
 
-       convert
-           Convert a pass(1) password store to a passage(1) store. All files
-           are decrypted using gpg(1), and then reencrypted with age(1).
+       convert [DIRECTORY]
+           Convert a pass(1) password store, DIRECTORY to a passage(1) store.
+           All files are decrypted using gpg(1), and then reencrypted with
+           age(1).  If unspecified, DIRECTORY is PASSWORD_STORE_DIR (which is
+           ~/.password-store by default).
 
        generate [-l LENGTH] FILE
            Generate a password of LENGTH characters long to FILE. If a custom

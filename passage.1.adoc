@@ -8,7 +8,7 @@ passage - password store utilizing age for encryption
 
 *passage* show [*-c*] [_FILE/DIRECTORY_...]
 
-*passage* convert
+*passage* convert [_DIRECTORY_]
 
 *passage* generate [*-l* _LENGTH_] _FILE_
 
@@ -36,9 +36,10 @@ some deviations where pass(1) is possibly a bit inconsistent and feature creep p
     If you provide a path to a password directory, the directory is listed.
     If you provide no path of any sort, the entire password store is listed.
 
-*convert*::
-    Convert a pass(1) password store to a passage(1) store. All files are decrypted using gpg(1),
-    and then reencrypted with age(1).
+*convert* [_DIRECTORY_]::
+    Convert a pass(1) password store, _DIRECTORY_ to a passage(1) store.
+    All files are decrypted using gpg(1), and then reencrypted with age(1).
+    If unspecified, _DIRECTORY_ is _PASSWORD_STORE_DIR_ (which is _~/.password-store_ by default).
 
 *generate* [*-l* _LENGTH_] _FILE_::
     Generate a password of _LENGTH_ characters long to _FILE_. If a custom _LENGTH_ is unspecified,

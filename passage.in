@@ -28,7 +28,7 @@ encrypt() {
 usage() {
     cat >&2 <<EOF
 usage: passage show [-c] FILE
-       passage convert
+       passage convert [DIRECTORY...]
        passage generate [-l LENGTH] FILE
        passage edit FILE...
 EOF
@@ -80,7 +80,12 @@ passage_edit() {
 }
 
 passage_convert() {
-    [ -d "${PASSWORD_STORE_DIR}" ] && cp -r "${PASSWORD_STORE_DIR}"/* "${PASSAGE_DIR}"
+    [ "$#" -eq 0 ] && set -- "${PASSWORD_STORE_DIR}"
+
+    while [ $# -gt 0 ]; do
+        cp -r "$1"/* "${PASSAGE_DIR}"
+        shift
+    done
 
     # Convert all gpg-encrypted files to age-encrypted files.
     find . -name '*.gpg' -type f -not -type l | while read -r file; do
