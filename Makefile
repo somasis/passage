@@ -10,6 +10,7 @@ man1dir ?= ${mandir}/man1
 ASCIIDOCTOR ?= asciidoctor
 ASCIIDOCTOR_FLAGS := --failure-level=WARNING
 ASCIIDOCTOR_FLAGS += -a manmanual="${name}"
+ASCIIDOCTOR_FLAGS += -a mansource="${name} ${version}"
 
 SHELLCHECK ?= shellcheck
 
