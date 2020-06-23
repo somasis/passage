@@ -1,0 +1,219 @@
+#!/bin/sh
+
+set -e
+
+: "${PASSAGE_DIR:=${XDG_DATA_HOME:-${HOME}/.local/share}/passage}"
+: "${PASSAGE_KEY:=${XDG_CONFIG_HOME:-${HOME}/.config}/passage/privkey}"
+: "${PASSAGE_RECIPIENT:=${XDG_CONFIG_HOME:-${HOME}/.config}/passage/recipients}"
+: "${PASSWORD_STORE_DIR:=${HOME}/.password-store}"
+
+# Only use a directory for temporary files that is guaranteed to be on memory.
+export TMPDIR=/dev/shm
+
+decrypt() {
+    age -d -i "${PASSAGE_KEY}" "$@"
+}
+
+encrypt() {
+    file="$1"
+
+    set --
+    while read -r recipient; do
+        set -- -r "${recipient}"
+    done < "${PASSAGE_RECIPIENT}"
+
+    age "$@" -a "${file}"
+}
+
+usage() {
+    cat >&2 <<EOF
+usage: passage show [-c] FILE
+       passage convert
+       passage generate [-l LENGTH] FILE
+       passage edit FILE...
+EOF
+
+    exit 127
+}
+
+pretty_list() {
+    [ "$#" -eq 0 ] && set -- .
+    while [ $# -gt 0 ]; do
+        find "${1}" -type d -o \( -type f -name '*.age' \) | sort -d
+        shift
+    done | sed 's|\.age$||; s|^\./||'
+}
+
+passage_init() {
+    mkdir -p "${PASSAGE_DIR}"
+    mkdir -p "$(dirname "${PASSAGE_KEY}")" "$(dirname "${PASSAGE_RECIPIENT_FILE}")"
+    [ -f "${PASSAGE_KEY}" ] || age-keygen -o "${PASSAGE_KEY}"
+    [ -f "${PASSAGE_RECIPIENT}" ] \
+        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENT}"
+}
+
+passage_edit() {
+    while [ $# -gt 0 ]; do
+        if [ -f "${1}".age ]; then
+            temp=$(mktemp passage.XXXXXX)
+            chmod 700 "${temp}"
+
+            decrypt "${1}".age > "${temp}"
+
+            "${EDITOR:-vi}" "${temp}" || {
+                printf \
+                    'error: editor died with error code %s, cleaning up decrypted file\n' "$?" >&2
+                rm -f "${temp}"
+            }
+
+            encrypt "${temp}" > "${1}".age
+            rm -f "${temp}"
+        else
+            "${EDITOR:-vi}" "${1}" || {
+                printf 'error: editor died with error code %s\n' "$?" >&2
+            }
+            encrypt "${1}" > "${1}".age
+        fi
+        shift
+    done
+
+}
+
+passage_convert() {
+    [ -d "${PASSWORD_STORE_DIR}" ] && cp -r "${PASSWORD_STORE_DIR}"/* "${PASSAGE_DIR}"
+
+    # Convert all gpg-encrypted files to age-encrypted files.
+    find . -name '*.gpg' -type f -not -type l | while read -r file; do
+        gpg -q --batch -d "${file}" | encrypt > "${file%.gpg}.age"
+        rm -f "${file}"
+    done
+
+    # Fix symbolic links that point to .gpg files.
+    find . -name '*.gpg' -type l | while read -r name; do
+        new_link=$(readlink "${name}")
+        new_link="${new_link%.gpg}".age
+        new_name="${name%.gpg}".age
+        ln -sf "${new_link}" "${new_name}"
+        rm -f "${name}"
+    done
+}
+
+passage_generate() {
+    clobber=false
+    length=24
+    while getopts :fl arg >/dev/null 2>&1; do
+        case "${arg}" in
+            f)
+                clobber=true
+                ;;
+            l)
+                length="${OPTARG}"
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${1}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    case "${length}" in
+        *[!0-9]*)
+            printf 'error: length "%s" is not an integer\n' "${length}" >&2
+            exit 127
+            ;;
+    esac
+
+    while [ $# -gt 0 ]; do
+        if [ -e "${1}" ] && ! "${clobber}"; then
+            printf \
+                'error: password file "%s" already exists, refusing to clobber without -f\n' \
+                "${1}" >&2
+            exit 2
+        fi
+
+        # NOTE: Using bs="${length}" count=1 rather than bs=1 count="${length}" saves syscalls.
+        temp=$(mktemp passage.XXXXXX)
+        chmod 600 "${temp}"
+        LC_ALL=C tr -cd '[:alnum:][:punct:]' </dev/urandom \
+            | dd bs="${length}" count=1 2>/dev/null > "${temp}"
+        cat "${temp}" > "${1}"
+        rm -f "${temp}"
+    done
+}
+
+passage_show() {
+    copy=false
+    while getopts :c arg >/dev/null 2>&1; do
+        case "${arg}" in
+            c)
+                copy=true
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${1}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    if [ -d "${1}" ] || [ -z "${1}" ]; then
+        pretty_list "$@"
+        return $?
+    fi
+
+    if [ -f "${1}".age ]; then
+        if "${copy}"; then
+            decrypt "${1}".age | xsel -ib
+            printf 'Password copied to clipboard. Clipboard will be cleared in 45 seconds.\n' >&2
+            (
+                sleep 45
+                xsel -cb
+            ) &
+        else
+            decrypt "${1}".age
+        fi
+    else
+        printf 'error: password file "%s" does not exist\n' "${1}" >&2
+        exit 3
+    fi
+}
+
+shift $(( OPTIND - 1 ))
+
+mode=
+case "${1:-help}" in
+    init) mode=init ;;
+    convert) mode=convert ;;
+    generate) mode=generate ;;
+    edit) mode=edit ;;
+    show) mode=show ;;
+    help) usage ;;
+    *)
+        printf 'unknown argument -- %s\n' "${1}" >&2
+        usage
+        ;;
+esac
+
+shift
+
+case "${mode}" in
+    help|init) : ;;
+    *)
+        [ -s "${PASSAGE_KEY}" ] || {
+            printf 'error: key file "%s" either does not exist or is empty\n' "${PASSAGE_KEY}" >&2
+            exit 4
+        }
+        [ -s "${PASSAGE_RECIPIENT}" ] || {
+            printf 'error: recipient file "%s" either does not exist or is empty\n' "${PASSAGE_RECIPIENT}" >&2
+            exit 4
+        }
+
+        cd "${PASSAGE_DIR}"
+
+        ;;
+esac
+
+passage_"${mode}" "$@"

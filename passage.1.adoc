@@ -1,0 +1,115 @@
+= passage(1)
+
+== Name
+
+passage - password store utilizing age for encryption
+
+== Synopsis
+
+*passage* list [_DIRECTORY_...]
+
+*passage* show [*-c*] [_FILE/DIRECTORY_...]
+
+*passage* convert
+
+*passage* generate [*-l* _LENGTH_] _FILE_
+
+*passage* edit _FILE_...
+
+== Description
+
+// TODO: age(1) doesn't actually exist, I should probably write one and contribute it upstream.
+
+*passage* is a password store. It allows for storing passwords within a directory, by default
+_~/.local/share/passage_, encrypting them with age(1). It is a reimplementation of pass(1), with
+some deviations where pass(1) is possibly a bit inconsistent and feature creep prone.
+
+== Commands
+
+*show* [*-c*] [_FILE/DIRECTORY_]::
+    Show a list of password files and directories.
+    Password files have their ".age" suffix removed for readability.
+
+    If you provide a path to a password file, the contents are printed to standard output.
+
+    If *-c* is specified, the contents are instead copied to your X clipboard using xsel(1),
+    and then it is cleared after 45 seconds.
+
+    If you provide a path to a password directory, the directory is listed.
+    If you provide no path of any sort, the entire password store is listed.
+
+*convert*::
+    Convert a pass(1) password store to a passage(1) store. All files are decrypted using gpg(1),
+    and then reencrypted with age(1).
+
+*generate* [*-l* _LENGTH_] _FILE_::
+    Generate a password of _LENGTH_ characters long to _FILE_. If a custom _LENGTH_ is unspecified,
+    the default length is 24 characters long. The password contains alphabetical, numeric, and
+    punctuation symbols.
+
+*edit* _FILE_::
+    Decrypt and open _FILE_ in your editor. The file is written to a temporary file with owner-only
+    read and write permissions, and then written back to the original location.
+
+
+== Environment
+
+_EDITOR_::
+    The default editor used by the *edit* command. If not set, defaults to vi(1).
+
+_PASSAGE_DIR_::
+    A directory containing the password store.
+    If not specified, *${XDG_DATA_HOME}/passage* is used instead.
+
+_PASSAGE_KEY_::
+    A file path. This is the key used for encrypting passwords; your private key.
+    If not specified, *${XDG_CONFIG_HOME}/passage/privkey* is used.
+
+_PASSAGE_RECIPIENTS_::
+    A file path. This is the list of public keys that password files are encrypted *for*.
+    As in, this is what public keys should be able to decrypt password files.
+    If not specified, *${XDG_CONFIG_HOME}/passage/recipients* is used.
+
+_PASSWORD_STORE_DIR_::
+    If set, this directory is used by *convert*, rather than pass(1)'s own default,
+    *~/.password-store*.'
+
+== Files
+
+_${XDG_CONFIG_HOME}/passage/privkey_::
+    The default location of the encrypting key, or private key.
+    The encrypting key can be changed with _PASSAGE_KEY_.
+    By default _XDG_CONFIG_HOME_ is set to *~/.config*.
+
+_${XDG_CONFIG_HOME}/passage/recipients_::
+    The default location of the recipients list.
+    The location can be changed with _PASSAGE_RECIPIENTS_.
+    By default _XDG_CONFIG_HOME_ is set to *~/.config*.
+
+_${XDG_DATA_HOME}/passage_::
+    The default location of the password store.
+    The location can be changed with _PASSAGE_DIR_.
+    By default, _XDG_DATA_HOME_ is set to *~/.local/share*.
+
+_${PASSAGE_DIR}/passage/*.age_::
+    Files encrypted with age(1).
+
+== Notes
+
+Since age(1) supports using SSH public/private key pairs for encrypting and decrypting, you can
+actually just set _PASSAGE_KEY_ to *~/.ssh/id_rsa* (or similar) and _PASSAGE_RECIPIENTS_ to
+*~/.ssh/id_rsa.pub* (again, or similar), and use your SSH keys for things.
+
+== Bugs
+
+There's an IRC channel for this and other utilities at <irc://irc.freenode.net/#mutiny>.
+Please don't hesitate to message if you have questions.
+
+== License
+
+*passage* is in the public domain.
+
+To the extent possible under law, Kylie McClain has waived all copyright and related or neighboring
+rights to this work.
+
+<http://creativecommons.org/publicdomain/zero/1.0/>

@@ -1,0 +1,169 @@
+'\" t
+.\"     Title: passage
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 2.0.10
+.\"      Date: 2020-06-23
+.\"    Manual: passage
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "PASSAGE" "1" "2020-06-23" "\ \&" "passage"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+passage \- password store utilizing age for encryption
+.SH "SYNOPSIS"
+.sp
+\fBpassage\fP list [\fIDIRECTORY\fP...]
+.sp
+\fBpassage\fP show [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
+.sp
+\fBpassage\fP convert
+.sp
+\fBpassage\fP generate [\fB\-l\fP \fILENGTH\fP] \fIFILE\fP
+.sp
+\fBpassage\fP edit \fIFILE\fP...
+.SH "DESCRIPTION"
+.sp
+\fBpassage\fP is a password store. It allows for storing passwords within a directory, by default
+\fI~/.local/share/passage\fP, encrypting them with age(1). It is a reimplementation of pass(1), with
+some deviations where pass(1) is possibly a bit inconsistent and feature creep prone.
+.SH "COMMANDS"
+.sp
+\fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP]
+.RS 4
+Show a list of password files and directories.
+Password files have their ".age" suffix removed for readability.
+.sp
+.if n .RS 4
+.nf
+If you provide a path to a password file, the contents are printed to standard output.
+.fi
+.if n .RE
+.sp
+.if n .RS 4
+.nf
+If *\-c* is specified, the contents are instead copied to your X clipboard using xsel(1),
+and then it is cleared after 45 seconds.
+.fi
+.if n .RE
+.sp
+.if n .RS 4
+.nf
+If you provide a path to a password directory, the directory is listed.
+If you provide no path of any sort, the entire password store is listed.
+.fi
+.if n .RE
+.RE
+.sp
+\fBconvert\fP
+.RS 4
+Convert a pass(1) password store to a passage(1) store. All files are decrypted using gpg(1),
+and then reencrypted with age(1).
+.RE
+.sp
+\fBgenerate\fP [\fB\-l\fP \fILENGTH\fP] \fIFILE\fP
+.RS 4
+Generate a password of \fILENGTH\fP characters long to \fIFILE\fP. If a custom \fILENGTH\fP is unspecified,
+the default length is 24 characters long. The password contains alphabetical, numeric, and
+punctuation symbols.
+.RE
+.sp
+\fBedit\fP \fIFILE\fP
+.RS 4
+Decrypt and open \fIFILE\fP in your editor. The file is written to a temporary file with owner\-only
+read and write permissions, and then written back to the original location.
+.RE
+.SH "ENVIRONMENT"
+.sp
+\fIEDITOR\fP
+.RS 4
+The default editor used by the \fBedit\fP command. If not set, defaults to vi(1).
+.RE
+.sp
+\fIPASSAGE_DIR\fP
+.RS 4
+A directory containing the password store.
+If not specified, \fB${XDG_DATA_HOME}/passage\fP is used instead.
+.RE
+.sp
+\fIPASSAGE_KEY\fP
+.RS 4
+A file path. This is the key used for encrypting passwords; your private key.
+If not specified, \fB${XDG_CONFIG_HOME}/passage/privkey\fP is used.
+.RE
+.sp
+\fIPASSAGE_RECIPIENTS\fP
+.RS 4
+A file path. This is the list of public keys that password files are encrypted \fBfor\fP.
+As in, this is what public keys should be able to decrypt password files.
+If not specified, \fB${XDG_CONFIG_HOME}/passage/recipients\fP is used.
+.RE
+.sp
+\fIPASSWORD_STORE_DIR\fP
+.RS 4
+If set, this directory is used by \fBconvert\fP, rather than pass(1)\(aqs own default,
+\fB~/.password\-store\fP.\(aq
+.RE
+.SH "FILES"
+.sp
+\fI${XDG_CONFIG_HOME}/passage/privkey\fP
+.RS 4
+The default location of the encrypting key, or private key.
+The encrypting key can be changed with \fIPASSAGE_KEY\fP.
+By default \fIXDG_CONFIG_HOME\fP is set to \fB~/.config\fP.
+.RE
+.sp
+\fI${XDG_CONFIG_HOME}/passage/recipients\fP
+.RS 4
+The default location of the recipients list.
+The location can be changed with \fIPASSAGE_RECIPIENTS\fP.
+By default \fIXDG_CONFIG_HOME\fP is set to \fB~/.config\fP.
+.RE
+.sp
+\fI${XDG_DATA_HOME}/passage\fP
+.RS 4
+The default location of the password store.
+The location can be changed with \fIPASSAGE_DIR\fP.
+By default, \fIXDG_DATA_HOME\fP is set to \fB~/.local/share\fP.
+.RE
+.sp
+\fI${PASSAGE_DIR}/passage/*.age\fP
+.RS 4
+Files encrypted with age(1).
+.RE
+.SH "NOTES"
+.sp
+Since age(1) supports using SSH public/private key pairs for encrypting and decrypting, you can
+actually just set \fIPASSAGE_KEY\fP to \fB~/.ssh/id_rsa\fP (or similar) and \fIPASSAGE_RECIPIENTS\fP to
+\fB~/.ssh/id_rsa.pub\fP (again, or similar), and use your SSH keys for things.
+.SH "BUGS"
+.sp
+There\(cqs an IRC channel for this and other utilities at \c
+.URL "irc://irc.freenode.net/#mutiny" "" "."
+Please don\(cqt hesitate to message if you have questions.
+.SH "LICENSE"
+.sp
+\fBpassage\fP is in the public domain.
+.sp
+To the extent possible under law, Kylie McClain has waived all copyright and related or neighboring
+rights to this work.
+.sp
+.URL "http://creativecommons.org/publicdomain/zero/1.0/" "" ""
