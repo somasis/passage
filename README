@@ -6,8 +6,6 @@ NAME
        passage - password store utilizing age for encryption
 
 SYNOPSIS
-       passage list [DIRECTORY...]
-
        passage show [-c] [FILE/DIRECTORY...]
 
        passage convert

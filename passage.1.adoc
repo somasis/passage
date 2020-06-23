@@ -6,8 +6,6 @@ passage - password store utilizing age for encryption
 
 == Synopsis
 
-*passage* list [_DIRECTORY_...]
-
 *passage* show [*-c*] [_FILE/DIRECTORY_...]
 
 *passage* convert
