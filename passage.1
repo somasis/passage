@@ -41,8 +41,8 @@ passage \- password store utilizing age for encryption
 .SH "DESCRIPTION"
 .sp
 \fBpassage\fP is a password store. It allows for storing passwords within a directory, by default
-\fI~/.local/share/passage\fP, encrypting them with age(1). It is a reimplementation of pass(1), with
-some deviations where pass(1) is possibly a bit inconsistent and feature creep prone.
+\fI${XDG_DATA_HOME}/share/passage\fP, encrypting them with age(1). It is based in design off of pass(1),
+with some deviations from it when pass(1) is possibly a bit inconsistent and feature creep prone.
 .SH "COMMANDS"
 \fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .RS 4
@@ -54,8 +54,6 @@ If \fB\-c\fP is specified and a password file is given, the contents are copied 
 using xsel(1), rather than being printed, and then the clipboard is cleared after 45 seconds.
 If you provide a path to a password directory, the directory is listed.
 If you provide no path of any sort, the entire password store is listed.
-.fi
-.if n .RE
 .RE
 .sp
 \fBconvert\fP [\fB\-v\fP] [\fIDIRECTORY\fP]

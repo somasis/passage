@@ -19,8 +19,8 @@ passage - password store utilizing age for encryption
 // TODO: age(1) doesn't actually exist, I should probably write one and contribute it upstream.
 
 *passage* is a password store. It allows for storing passwords within a directory, by default
-_~/.local/share/passage_, encrypting them with age(1). It is a reimplementation of pass(1), with
-some deviations where pass(1) is possibly a bit inconsistent and feature creep prone.
+_${XDG_DATA_HOME}/share/passage_, encrypting them with age(1). It is based in design off of pass(1),
+with some deviations from it when pass(1) is possibly a bit inconsistent and feature creep prone.
 
 == Commands
 
