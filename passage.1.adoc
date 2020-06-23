@@ -24,15 +24,14 @@ some deviations where pass(1) is possibly a bit inconsistent and feature creep p
 
 == Commands
 
-*show* [*-c*] [_FILE/DIRECTORY_]::
-    Show a list of password files and directories.
-    Password files have their ".age" suffix removed for readability.
 
-    If you provide a path to a password file, the contents are printed to standard output.
-
-    If *-c* is specified, the contents are instead copied to your X clipboard using xsel(1),
-    and then it is cleared after 45 seconds.
-
+*show* [*-c*] [_FILE/DIRECTORY_...]::
+    Show a list of password files and directories, or show the contents of a password file.
+    Directories are listed with a trailing slash (_/_) at the end of a line, files do not.
+    Files have their ".age" suffix removed for readability.
+    If a path to a password file is given, the contents of that file are printed to standard output.
+    If *-c* is specified and a password file is given, the contents are copied to your X clipboard
+    using xsel(1), rather than being printed, and then the clipboard is cleared after 45 seconds.
     If you provide a path to a password directory, the directory is listed.
     If you provide no path of any sort, the entire password store is listed.
 

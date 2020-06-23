@@ -27,7 +27,7 @@ encrypt() {
 
 usage() {
     cat >&2 <<EOF
-usage: passage show [-c] FILE
+usage: passage show [-c] [FILE/DIRECTORY...]
        passage convert [-v] [DIRECTORY...]
        passage generate [-l LENGTH] FILE
        passage edit FILE...
@@ -39,9 +39,10 @@ EOF
 pretty_list() {
     [ "$#" -eq 0 ] && set -- .
     while [ $# -gt 0 ]; do
-        find "${1}" -type d -o \( -type f -name '*.age' \) | sort -d
+        find "${1}" -type d \( -not -name '.*' \) | sed 's|$|/|'
+        find "${1}" \( -type f -name '*.age' \)
         shift
-    done | sed 's|\.age$||; s|^\./||'
+    done | sed 's|\.age$||; s|^\./||' | sort -d
 }
 
 passage_init() {

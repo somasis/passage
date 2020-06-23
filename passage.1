@@ -44,27 +44,14 @@ passage \- password store utilizing age for encryption
 \fI~/.local/share/passage\fP, encrypting them with age(1). It is a reimplementation of pass(1), with
 some deviations where pass(1) is possibly a bit inconsistent and feature creep prone.
 .SH "COMMANDS"
-.sp
-\fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP]
+\fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .RS 4
-Show a list of password files and directories.
-Password files have their ".age" suffix removed for readability.
-.sp
-.if n .RS 4
-.nf
-If you provide a path to a password file, the contents are printed to standard output.
-.fi
-.if n .RE
-.sp
-.if n .RS 4
-.nf
-If *\-c* is specified, the contents are instead copied to your X clipboard using xsel(1),
-and then it is cleared after 45 seconds.
-.fi
-.if n .RE
-.sp
-.if n .RS 4
-.nf
+Show a list of password files and directories, or show the contents of a password file.
+Directories are listed with a trailing slash (\fI/\fP) at the end of a line, files do not.
+Files have their ".age" suffix removed for readability.
+If a path to a password file is given, the contents of that file are printed to standard output.
+If \fB\-c\fP is specified and a password file is given, the contents are copied to your X clipboard
+using xsel(1), rather than being printed, and then the clipboard is cleared after 45 seconds.
 If you provide a path to a password directory, the directory is listed.
 If you provide no path of any sort, the entire password store is listed.
 .fi
