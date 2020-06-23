@@ -46,14 +46,14 @@ COMMANDS
            symbols.
 
        edit FILE
-           Decrypt and open FILE in your editor. The file is written to a
-           temporary file with owner-only read and write permissions, and then
-           written back to the original location.
+           Decrypt and open FILE in your editor. The decrypted file is written
+           to a temporary file with owner-only read and write permissions, and
+           then written back to the original location.
 
 ENVIRONMENT
        EDITOR
-           The default editor used by the edit command. If not set, defaults
-           to vi(1).
+           The default editor used by the edit command. If not set, it
+           defaults to vi(1).
 
        PASSAGE_DIR
            A directory containing the password store.  If not specified,

@@ -47,14 +47,13 @@ some deviations where pass(1) is possibly a bit inconsistent and feature creep p
     punctuation symbols.
 
 *edit* _FILE_::
-    Decrypt and open _FILE_ in your editor. The file is written to a temporary file with owner-only
-    read and write permissions, and then written back to the original location.
-
+    Decrypt and open _FILE_ in your editor. The decrypted file is written to a temporary file with
+    owner-only read and write permissions, and then written back to the original location.
 
 == Environment
 
 _EDITOR_::
-    The default editor used by the *edit* command. If not set, defaults to vi(1).
+    The default editor used by the *edit* command. If not set, it defaults to vi(1).
 
 _PASSAGE_DIR_::
     A directory containing the password store.
