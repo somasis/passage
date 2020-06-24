@@ -15,7 +15,6 @@ ASCIIDOCTOR_FLAGS += -a mansource="${name} ${version}"
 SHELLCHECK ?= shellcheck
 
 SHELLSPEC ?= shellspec
-SHELLSPEC_FLAGS ?= --format tap
 
 -include config.mk
 
