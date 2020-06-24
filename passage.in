@@ -2,13 +2,22 @@
 
 set -e
 
-: "${PASSAGE_DIR:=${XDG_DATA_HOME:-${HOME}/.local/share}/passage}"
-: "${PASSAGE_KEY:=${XDG_CONFIG_HOME:-${HOME}/.config}/passage/privkey}"
-: "${PASSAGE_RECIPIENT:=${XDG_CONFIG_HOME:-${HOME}/.config}/passage/recipients}"
+: "${XDG_CONFIG_HOME:=${HOME}/.config}"
+: "${XDG_DATA_HOME:=${HOME}/.local/share}"
+
+# This may or may not be used, so don't try and check the source.
+# shellcheck disable=SC1090
+[ -f "${XDG_CONFIG_HOME}"/passage/passage.conf ] && . "${XDG_CONFIG_HOME}"/passage/passage.conf
+
+: "${PASSAGE_DIR:=${XDG_DATA_HOME}/passage}"
+: "${PASSAGE_KEY:=${XDG_CONFIG_HOME}/passage/privkey}"
+: "${PASSAGE_RECIPIENTS:=${XDG_CONFIG_HOME}/passage/recipients}"
 : "${PASSWORD_STORE_DIR:=${HOME}/.password-store}"
 
 # Only use a directory for temporary files that is guaranteed to be on memory.
 export TMPDIR=/dev/shm
+
+export PASSAGE_DIR PASSAGE_KEY PASSAGE_RECIPIENTS
 
 decrypt() {
     age -d -i "${PASSAGE_KEY}" "$@"

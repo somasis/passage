@@ -98,6 +98,11 @@ _${XDG_DATA_HOME}/passage_::
     The location can be changed with _PASSAGE_DIR_.
     By default, _XDG_DATA_HOME_ is set to *~/.local/share*.
 
+_${XDG_CONFIG_HOME}/passage/passage.conf_::
+    The default location of the configuration. Any variable mentioned in _ENVIRONMENT_ can be set
+    here as well.
+    By default _XDG_CONFIG_HOME_ is set to *~/.config*.
+
 _${XDG_CONFIG_HOME}/passage/privkey_::
     The default location of the encrypting key, or private key.
     The encrypting key can be changed with _PASSAGE_KEY_.
