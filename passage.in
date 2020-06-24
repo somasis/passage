@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ef
 
 : "${XDG_CONFIG_HOME:=${HOME}/.config}"
 : "${XDG_DATA_HOME:=${HOME}/.local/share}"
@@ -129,10 +129,13 @@ passage_convert() {
 
     [ "$#" -eq 0 ] && set -- "${PASSWORD_STORE_DIR}"
 
+    # Temporary enable path globbing.
+    set +f
     while [ $# -gt 0 ]; do
         cp -r "$1"/* "${PASSAGE_DIR}"
         shift
     done
+    set -f
 
     # Convert all gpg-encrypted files to age-encrypted files.
     find . -name '*.gpg' -type f -not -type l | while read -r file; do
