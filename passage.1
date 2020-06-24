@@ -37,6 +37,8 @@ passage \- password store utilizing age for encryption
 .sp
 \fBpassage\fP generate [\fB\-f\fP] [\fB\-l\fP \fILENGTH\fP] \fIFILE\fP
 .sp
+\fBpassage\fP init
+.sp
 \fBpassage\fP rm [\fB\-rf\fP] [\fIFILE/DIRECTORY\fP...]
 .sp
 \fBpassage\fP show [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
@@ -133,6 +135,12 @@ Generate a password of \fILENGTH\fP characters long to \fIFILE\fP. If a custom \
 the default length is 24 characters long. The password contains alphabetical, numeric, and
 punctuation symbols. If the password file already exists, it will not overwrite it.
 If \fB\-f\fP is specified, it will.
+.RE
+.sp
+\fBinit\fP
+.RS 4
+Create the password store directory. No arguments are taken, as the directory and keys (if not
+defaults) should be set in the config or environment (see \fIENVIRONMENT\fP and \fIFILES\fP) anyway.
 .RE
 .sp
 \fBrm\fP [\fB\-rf\fP] [\fIFILE/DIRECTORY\fP...]

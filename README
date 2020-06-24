@@ -12,6 +12,8 @@ SYNOPSIS
 
        passage generate [-f] [-l LENGTH] FILE
 
+       passage init
+
        passage rm [-rf] [FILE/DIRECTORY...]
 
        passage show [-c] [FILE/DIRECTORY...]
@@ -68,6 +70,11 @@ COMMANDS
            The password contains alphabetical, numeric, and punctuation
            symbols. If the password file already exists, it will not overwrite
            it.  If -f is specified, it will.
+
+       init
+           Create the password store directory. No arguments are taken, as the
+           directory and keys (if not defaults) should be set in the config or
+           environment (see ENVIRONMENT and FILES) anyway.
 
        rm [-rf] [FILE/DIRECTORY...]
            Delete a file/directory in the password store. -r will remove a
