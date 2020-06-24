@@ -219,7 +219,7 @@ passage_init() {
     mkdir -p "$(dirname "${PASSAGE_KEY}")" "$(dirname "${PASSAGE_RECIPIENTS}")"
     [ -f "${PASSAGE_KEY}" ] || age-keygen -o "${PASSAGE_KEY}"
     [ -f "${PASSAGE_RECIPIENTS}" ] \
-        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENTS}"i
+        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENTS}"
 }
 
 passage_show() {
