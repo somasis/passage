@@ -1,5 +1,5 @@
 passage_generate_show() {
-    passage generate "$1" && passage show "$1" && passage rm -r "${1%/*}"
+    passage mkdir "${1%/*}" && passage generate "$1" && passage show "$1" && passage rm -r "${1%/*}"
 }
 
 Describe "passage-generate"
