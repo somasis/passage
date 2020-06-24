@@ -1,2 +1,5 @@
 passage
+
+spec/testdata/store/tmp
+
 config.mk

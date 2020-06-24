@@ -14,6 +14,9 @@ ASCIIDOCTOR_FLAGS += -a mansource="${name} ${version}"
 
 SHELLCHECK ?= shellcheck
 
+SHELLSPEC ?= shellspec
+SHELLSPEC_FLAGS ?= --format tap
+
 -include config.mk
 
 BINS = \
@@ -25,7 +28,7 @@ MANS = ${MAN1}
 HTMLS = ${MANS:=.html}
 
 all: FRC ${BINS} ${MANS}
-dev: FRC README all lint
+dev: FRC README all lint check
 
 bin: FRC ${BINS}
 man: FRC ${MANS}
@@ -82,5 +85,8 @@ README: passage.1
 
 lint: FRC ${BINS}
 	${SHELLCHECK} ${BINS}
+
+check: FRC ${BINS}
+	${SHELLSPEC} ${SHELLSPEC_FLAGS}
 
 FRC:
