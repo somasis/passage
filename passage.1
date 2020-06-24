@@ -33,13 +33,21 @@ passage \- password store utilizing age for encryption
 .sp
 \fBpassage\fP convert [\fB\-v\fP] [\fIDIRECTORY\fP]
 .sp
+\fBpassage\fP cp [\fB\-fr\fP] \fISOURCE\fP \fIDESTINATION\fP
+.sp
 \fBpassage\fP edit \fIFILE\fP...
 .sp
 \fBpassage\fP generate [\fB\-f\fP] [\fB\-l\fP \fILENGTH\fP] \fIFILE\fP
 .sp
 \fBpassage\fP init
 .sp
-\fBpassage\fP rm [\fB\-rf\fP] \fIFILE/DIRECTORY\fP...
+\fBpassage\fP ln [\fB\-f\fP] \fITARGET\fP \fIDESTINATION\fP
+.sp
+\fBpassage\fP mkdir [\fB\-p\fP] \fIDIRECTORY\fP...
+.sp
+\fBpassage\fP mv [\fB\-f\fP] \fISOURCE\fP \fIDESTINATION\fP
+.sp
+\fBpassage\fP rm [\fB\-fr\fP] \fIFILE/DIRECTORY\fP...
 .sp
 \fBpassage\fP show [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .SH "DESCRIPTION"
@@ -114,6 +122,12 @@ Conforming to XDG specifications by default. pass(1) does not, though it can be 
 .sp
 When providing a password file as an argument, do not include the ".age" suffix.
 .sp
+\fBcp\fP [\fB\-fr\fP] \fISOURCE\fP \fIDESTINATION\fP
+.RS 4
+Copy a password file or directory from \fISOURCE\fP to \fIDESTINATION\fP. \fB\-f\fP will allow overwriting
+existing files. \fB\-r\fP will copy a directory recursively.
+.RE
+.sp
 \fBconvert\fP [\fB\-v\fP] [\fIDIRECTORY\fP]
 .RS 4
 Convert a pass(1) password store, \fIDIRECTORY\fP to a passage(1) store.
@@ -143,10 +157,27 @@ Create the password store directory. No arguments are taken, as the directory an
 defaults) should be set in the config or environment (see \fIENVIRONMENT\fP and \fIFILES\fP) anyway.
 .RE
 .sp
-\fBrm\fP [\fB\-rf\fP] \fIFILE/DIRECTORY\fP...
+\fBln\fP [\fB\-f\fP] \fITARGET\fP \fIDESTINATION\fP
 .RS 4
-Delete a file/directory in the password store. \fB\-r\fP will remove a directory recursively, \fB\-f\fP
-will not error out if the file or directory doesn\(cqt exist.
+Create a symbolic link at \fIDESTINATION\fP that resolves to \fITARGET\fP. \fB\-f\fP will allow overwriting
+existing files and links.
+.RE
+.sp
+\fBmkdir\fP [\fB\-p\fP] \fIDIRECTORY\fP
+.RS 4
+Create a directory named \fIDIRECTORY\fP. \fB\-p\fP will create all parents of the directory if they do
+not exist.
+.RE
+.sp
+\fBmv\fP [\fB\-f\fP] \fISOURCE\fP \fIDESTINATION\fP
+.RS 4
+Move the \fISOURCE\fP file or directory to \fIDESTINATION\fP. \fB\-f\fP will allow overwriting files.
+.RE
+.sp
+\fBrm\fP [\fB\-fr\fP] \fIFILE/DIRECTORY\fP...
+.RS 4
+Delete a file/directory in the password store. \fB\-f\fP will not error out if the file or directory
+doesn\(cqt exist. \fB\-r\fP will remove a directory recursively.
 .RE
 .sp
 \fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]

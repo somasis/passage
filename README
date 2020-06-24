@@ -8,13 +8,21 @@ NAME
 SYNOPSIS
        passage convert [-v] [DIRECTORY]
 
+       passage cp [-fr] SOURCE DESTINATION
+
        passage edit FILE...
 
        passage generate [-f] [-l LENGTH] FILE
 
        passage init
 
-       passage rm [-rf] FILE/DIRECTORY...
+       passage ln [-f] TARGET DESTINATION
+
+       passage mkdir [-p] DIRECTORY...
+
+       passage mv [-f] SOURCE DESTINATION
+
+       passage rm [-fr] FILE/DIRECTORY...
 
        passage show [-c] [FILE/DIRECTORY...]
 
@@ -51,6 +59,11 @@ COMMANDS
        When providing a password file as an argument, do not include the
        ".age" suffix.
 
+       cp [-fr] SOURCE DESTINATION
+           Copy a password file or directory from SOURCE to DESTINATION. -f
+           will allow overwriting existing files. -r will copy a directory
+           recursively.
+
        convert [-v] [DIRECTORY]
            Convert a pass(1) password store, DIRECTORY to a passage(1) store.
            All files are decrypted using gpg(1), and then reencrypted with
@@ -76,10 +89,22 @@ COMMANDS
            directory and keys (if not defaults) should be set in the config or
            environment (see ENVIRONMENT and FILES) anyway.
 
-       rm [-rf] FILE/DIRECTORY...
-           Delete a file/directory in the password store. -r will remove a
-           directory recursively, -f will not error out if the file or
-           directory doesn’t exist.
+       ln [-f] TARGET DESTINATION
+           Create a symbolic link at DESTINATION that resolves to TARGET. -f
+           will allow overwriting existing files and links.
+
+       mkdir [-p] DIRECTORY
+           Create a directory named DIRECTORY. -p will create all parents of
+           the directory if they do not exist.
+
+       mv [-f] SOURCE DESTINATION
+           Move the SOURCE file or directory to DESTINATION. -f will allow
+           overwriting files.
+
+       rm [-fr] FILE/DIRECTORY...
+           Delete a file/directory in the password store. -f will not error
+           out if the file or directory doesn’t exist. -r will remove a
+           directory recursively.
 
        show [-c] [FILE/DIRECTORY...]
            Show a list of password files and directories, or show the contents

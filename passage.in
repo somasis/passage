@@ -55,10 +55,14 @@ is_beneath_store() {
 usage() {
     cat >&2 <<EOF
 usage: passage convert [-v] [DIRECTORY...]
+       passage cp [-fr] SOURCE DESTINATION
        passage edit FILE...
        passage generate [-f] [-l LENGTH] FILE
        passage init
-       passage rm [-rf] FILE/DIRECTORY...
+       passage ln [-f] TARGET DESTINATION
+       passage mkdir [-p] DIRECTORY...
+       passage mv [-f] SOURCE DESTINATION
+       passage rm [-fr] FILE/DIRECTORY...
        passage show [-c] [FILE/DIRECTORY...]
 EOF
 
@@ -148,6 +152,7 @@ passage_edit() {
             }
             encrypt "${1}" > "${1}".age
         fi
+
         shift
     done
 
@@ -205,40 +210,7 @@ passage_init() {
     mkdir -p "$(dirname "${PASSAGE_KEY}")" "$(dirname "${PASSAGE_RECIPIENTS}")"
     [ -f "${PASSAGE_KEY}" ] || age-keygen -o "${PASSAGE_KEY}"
     [ -f "${PASSAGE_RECIPIENTS}" ] \
-        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENTS}"
-}
-
-passage_rm() {
-    recurse=
-    force=
-    while getopts :rf arg >/dev/null 2>&1; do
-        case "${arg}" in
-            r)
-                recurse=true
-                ;;
-            f)
-                force=true
-                ;;
-            ?)
-                printf 'unknown argument -- %s\n' "${1}" >&2
-                usage
-                ;;
-        esac
-    done
-
-    shift $(( OPTIND - 1 ))
-
-    while [ $# -gt 0 ]; do
-        is_beneath_store "$1"
-
-        if [ -d "${1}" ]; then
-            rm ${recurse:+-r} ${force:+-f} "$1"
-        else
-            rm ${recurse:+-r} ${force:+-f} "$1".age
-        fi
-
-        shift
-    done
+        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENTS}"i
 }
 
 passage_show() {
@@ -262,7 +234,7 @@ passage_show() {
         return $?
     fi
 
-    is_beneath_store "$1"
+    is_beneath_store "$1".age
 
     if [ -f "${1}".age ]; then
         if "${copy}"; then
@@ -281,11 +253,152 @@ passage_show() {
     fi
 }
 
+## File operation commands
+
+passage_cp() {
+    force=
+    recurse=
+    while getopts :fr arg >/dev/null 2>&1; do
+        case "${arg}" in
+            f)
+                force=true
+                ;;
+            r)
+                recurse=true
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${OPTARG}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    [ "$#" -eq 2 ] || {
+        printf 'error: missing destination file\n' >&2
+        usage
+    }
+
+    is_beneath_store "$1"
+
+    if [ -d "${1}" ]; then
+        cp ${force:+-f} ${recurse:+-r} "$1" "$2"
+    else
+        cp ${force:+-f} ${recurse:+-r} "$1".age "$2".age
+    fi
+}
+
+passage_ln() {
+    force=
+    while getopts :f arg >/dev/null 2>&1; do
+        case "${arg}" in
+            f)
+                force=true
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${OPTARG}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    is_beneath_store "$@"
+
+    if [ -d "${1}" ]; then
+        ln -s ${force:+-f} "$1" "$2"
+    else
+        ln -s ${force:+-f} "$1".age "$2".age
+    fi
+    shift
+}
+
+passage_mkdir() {
+    parents=
+    while getopts :p arg >/dev/null 2>&1; do
+        case "${arg}" in
+            p)
+                parents=true
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${OPTARG}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    is_beneath_store "$@"
+
+    mkdir ${parents:+-p} "$@"
+}
+
+passage_mv() {
+    force=
+    while getopts :f arg >/dev/null 2>&1; do
+        case "${arg}" in
+            f)
+                force=true
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${OPTARG}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    is_beneath_store "$@"
+
+    if [ -d "${1}" ]; then
+        mv ${force:+-f} "$1" "$2"
+    else
+        mv ${force:+-f} "$1".age "$2".age
+    fi
+}
+
+passage_rm() {
+    recurse=
+    force=
+    while getopts :fr arg >/dev/null 2>&1; do
+        case "${arg}" in
+            f)
+                force=true
+                ;;
+            r)
+                recurse=true
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${OPTARG}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    while [ "$#" -gt 0 ]; do
+        is_beneath_store "$1"
+
+        if [ -d "${1}" ]; then
+            rm ${force:+-f} ${recurse:+-r} "$1"
+        else
+            rm ${force:+-f} ${recurse:+-r} "$1".age
+        fi
+
+        shift
+    done
+}
+
 shift $(( OPTIND - 1 ))
 
 mode=
 case "${1:-help}" in
-    convert|edit|generate|init|rm|show)
+    convert|cp|edit|generate|init|ln|mkdir|mv|rm|show)
         mode="${1}"
         ;;
     help) usage ;;

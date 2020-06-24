@@ -8,13 +8,21 @@ passage - password store utilizing age for encryption
 
 *passage* convert [*-v*] [_DIRECTORY_]
 
+*passage* cp [*-fr*] _SOURCE_ _DESTINATION_
+
 *passage* edit _FILE_...
 
 *passage* generate [*-f*] [*-l* _LENGTH_] _FILE_
 
 *passage* init
 
-*passage* rm [*-rf*] _FILE/DIRECTORY_...
+*passage* ln [*-f*] _TARGET_ _DESTINATION_
+
+*passage* mkdir [*-p*] _DIRECTORY_...
+
+*passage* mv [*-f*] _SOURCE_ _DESTINATION_
+
+*passage* rm [*-fr*] _FILE/DIRECTORY_...
 
 *passage* show [*-c*] [_FILE/DIRECTORY_...]
 
@@ -45,6 +53,10 @@ with deviation where pass(1) seems inconsistent or prone to feature-creep.
 
 When providing a password file as an argument, do not include the ".age" suffix.
 
+*cp* [*-fr*] _SOURCE_ _DESTINATION_::
+    Copy a password file or directory from _SOURCE_ to _DESTINATION_. *-f* will allow overwriting
+    existing files. *-r* will copy a directory recursively.
+
 *convert* [*-v*] [_DIRECTORY_]::
     Convert a pass(1) password store, _DIRECTORY_ to a passage(1) store.
     All files are decrypted using gpg(1), and then reencrypted with age(1).
@@ -66,9 +78,20 @@ When providing a password file as an argument, do not include the ".age" suffix.
     Create the password store directory. No arguments are taken, as the directory and keys (if not
     defaults) should be set in the config or environment (see _ENVIRONMENT_ and _FILES_) anyway.
 
-*rm* [*-rf*] _FILE/DIRECTORY_...::
-    Delete a file/directory in the password store. *-r* will remove a directory recursively, *-f*
-    will not error out if the file or directory doesn't exist.
+*ln* [*-f*] _TARGET_ _DESTINATION_::
+    Create a symbolic link at _DESTINATION_ that resolves to _TARGET_. *-f* will allow overwriting
+    existing files and links.
+
+*mkdir* [*-p*] _DIRECTORY_::
+    Create a directory named _DIRECTORY_. *-p* will create all parents of the directory if they do
+    not exist.
+
+*mv* [*-f*] _SOURCE_ _DESTINATION_::
+    Move the _SOURCE_ file or directory to _DESTINATION_. *-f* will allow overwriting files.
+
+*rm* [*-fr*] _FILE/DIRECTORY_...::
+    Delete a file/directory in the password store. *-f* will not error out if the file or directory
+    doesn't exist. *-r* will remove a directory recursively.
 
 *show* [*-c*] [_FILE/DIRECTORY_...]::
     Show a list of password files and directories, or show the contents of a password file.
