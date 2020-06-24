@@ -204,7 +204,10 @@ using xsel(1), rather than being printed, and then the clipboard is cleared afte
 If you provide a path to a password directory, the directory is listed.
 If you provide no path of any sort, the entire password store is listed.
 .RE
-.SH "ENVIRONMENT"
+.SH "VARIABLES"
+.sp
+These variables can be set in the configuration file (see \fIFILES\fP). If they are in the environment,
+the environment variables will take priority.
 .sp
 \fIEDITOR\fP
 .RS 4
@@ -238,6 +241,11 @@ This environment variable is also used by pass(1), thus the reason it is used he
 .RE
 .SH "FILES"
 .sp
+\fI${PASSAGE_DIR}/*.age\fP
+.RS 4
+Files encrypted with age(1).
+.RE
+.sp
 \fI${XDG_DATA_HOME}/passage\fP
 .RS 4
 The default location of the password store.
@@ -247,8 +255,7 @@ By default, \fIXDG_DATA_HOME\fP is set to \fB~/.local/share\fP.
 .sp
 \fI${XDG_CONFIG_HOME}/passage/passage.conf\fP
 .RS 4
-The default location of the configuration. Any variable mentioned in \fIENVIRONMENT\fP can be set
-here as well.
+The default location of the configuration. Any variable in \fIVARIABLES\fP can be set here.
 By default \fIXDG_CONFIG_HOME\fP is set to \fB~/.config\fP.
 .RE
 .sp
@@ -264,11 +271,6 @@ By default \fIXDG_CONFIG_HOME\fP is set to \fB~/.config\fP.
 The default location of the recipients list.
 The location can be changed with \fIPASSAGE_RECIPIENTS\fP.
 By default \fIXDG_CONFIG_HOME\fP is set to \fB~/.config\fP.
-.RE
-.sp
-\fI${PASSAGE_DIR}/*.age\fP
-.RS 4
-Files encrypted with age(1).
 .RE
 .SH "NOTES"
 .sp

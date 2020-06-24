@@ -111,7 +111,10 @@ When providing a password file as an argument, do not include the ".age" suffix.
     If you provide a path to a password directory, the directory is listed.
     If you provide no path of any sort, the entire password store is listed.
 
-== Environment
+== Variables
+
+These variables can be set in the configuration file (see _FILES_). If they are in the environment,
+the environment variables will take priority.
 
 _EDITOR_::
     The default editor used by the *edit* command. If not set, it defaults to vi(1).
@@ -136,14 +139,16 @@ _PASSWORD_STORE_DIR_::
 
 == Files
 
+_${PASSAGE_DIR}/*.age_::
+    Files encrypted with age(1).
+
 _${XDG_DATA_HOME}/passage_::
     The default location of the password store.
     The location can be changed with _PASSAGE_DIR_.
     By default, _XDG_DATA_HOME_ is set to *~/.local/share*.
 
 _${XDG_CONFIG_HOME}/passage/passage.conf_::
-    The default location of the configuration. Any variable mentioned in _ENVIRONMENT_ can be set
-    here as well.
+    The default location of the configuration. Any variable in _VARIABLES_ can be set here.
     By default _XDG_CONFIG_HOME_ is set to *~/.config*.
 
 _${XDG_CONFIG_HOME}/passage/privkey_::
@@ -155,9 +160,6 @@ _${XDG_CONFIG_HOME}/passage/recipients_::
     The default location of the recipients list.
     The location can be changed with _PASSAGE_RECIPIENTS_.
     By default _XDG_CONFIG_HOME_ is set to *~/.config*.
-
-_${PASSAGE_DIR}/*.age_::
-    Files encrypted with age(1).
 
 == Notes
 

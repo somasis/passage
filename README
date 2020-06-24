@@ -125,7 +125,11 @@ COMMANDS
            listed.  If you provide no path of any sort, the entire password
            store is listed.
 
-ENVIRONMENT
+VARIABLES
+       These variables can be set in the configuration file (see FILES). If
+       they are in the environment, the environment variables will take
+       priority.
+
        EDITOR
            The default editor used by the edit command. If not set, it
            defaults to vi(1).
@@ -152,15 +156,18 @@ ENVIRONMENT
            variable is also used by pass(1), thus the reason it is used here.
 
 FILES
+       ${PASSAGE_DIR}/*.age
+           Files encrypted with age(1).
+
        ${XDG_DATA_HOME}/passage
            The default location of the password store.  The location can be
            changed with PASSAGE_DIR.  By default, XDG_DATA_HOME is set to
            ~/.local/share.
 
        ${XDG_CONFIG_HOME}/passage/passage.conf
-           The default location of the configuration. Any variable mentioned
-           in ENVIRONMENT can be set here as well.  By default XDG_CONFIG_HOME
-           is set to ~/.config.
+           The default location of the configuration. Any variable in
+           VARIABLES can be set here.  By default XDG_CONFIG_HOME is set to
+           ~/.config.
 
        ${XDG_CONFIG_HOME}/passage/privkey
            The default location of the encrypting key, or private key.  The
@@ -171,9 +178,6 @@ FILES
            The default location of the recipients list.  The location can be
            changed with PASSAGE_RECIPIENTS.  By default XDG_CONFIG_HOME is set
            to ~/.config.
-
-       ${PASSAGE_DIR}/*.age
-           Files encrypted with age(1).
 
 NOTES
        Since age(1) supports using SSH public/private key pairs for encrypting
