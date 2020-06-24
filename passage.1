@@ -37,6 +37,8 @@ passage \- password store utilizing age for encryption
 .sp
 \fBpassage\fP generate [\fB\-f\fP] [\fB\-l\fP \fILENGTH\fP] \fIFILE\fP
 .sp
+\fBpassage\fP rm [\fB\-rf\fP] [\fIFILE/DIRECTORY\fP...]
+.sp
 \fBpassage\fP show [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .SH "DESCRIPTION"
 .sp
@@ -133,8 +135,10 @@ punctuation symbols. If the password file already exists, it will not overwrite 
 If \fB\-f\fP is specified, it will.
 .RE
 .sp
-\fBedit\fP \fIFILE\fP
+\fBrm\fP [\fB\-rf\fP] [\fIFILE/DIRECTORY\fP...]
 .RS 4
+Delete a file/directory in the password store. \fB\-r\fP will remove a directory recursively, \fB\-f\fP
+will not error out if the file or directory doesn\(cqt exist.
 .RE
 .sp
 \fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]

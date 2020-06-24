@@ -12,6 +12,8 @@ SYNOPSIS
 
        passage generate [-f] [-l LENGTH] FILE
 
+       passage rm [-rf] [FILE/DIRECTORY...]
+
        passage show [-c] [FILE/DIRECTORY...]
 
 DESCRIPTION
@@ -67,6 +69,10 @@ COMMANDS
            symbols. If the password file already exists, it will not overwrite
            it.  If -f is specified, it will.
 
+       rm [-rf] [FILE/DIRECTORY...]
+           Delete a file/directory in the password store. -r will remove a
+           directory recursively, -f will not error out if the file or
+           directory doesn’t exist.
 
        show [-c] [FILE/DIRECTORY...]
            Show a list of password files and directories, or show the contents

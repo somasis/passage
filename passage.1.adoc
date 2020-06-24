@@ -12,6 +12,7 @@ passage - password store utilizing age for encryption
 
 *passage* generate [*-f*] [*-l* _LENGTH_] _FILE_
 
+*passage* rm [*-rf*] [_FILE/DIRECTORY_...]
 
 *passage* show [*-c*] [_FILE/DIRECTORY_...]
 
@@ -58,6 +59,10 @@ When providing a password file as an argument, do not include the ".age" suffix.
     the default length is 24 characters long. The password contains alphabetical, numeric, and
     punctuation symbols. If the password file already exists, it will not overwrite it.
     If *-f* is specified, it will.
+
+*rm* [*-rf*] [_FILE/DIRECTORY_...]::
+    Delete a file/directory in the password store. *-r* will remove a directory recursively, *-f*
+    will not error out if the file or directory doesn't exist.
 
 *show* [*-c*] [_FILE/DIRECTORY_...]::
     Show a list of password files and directories, or show the contents of a password file.
