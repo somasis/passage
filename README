@@ -14,7 +14,7 @@ SYNOPSIS
 
        passage init
 
-       passage rm [-rf] [FILE/DIRECTORY...]
+       passage rm [-rf] FILE/DIRECTORY...
 
        passage show [-c] [FILE/DIRECTORY...]
 
@@ -76,7 +76,7 @@ COMMANDS
            directory and keys (if not defaults) should be set in the config or
            environment (see ENVIRONMENT and FILES) anyway.
 
-       rm [-rf] [FILE/DIRECTORY...]
+       rm [-rf] FILE/DIRECTORY...
            Delete a file/directory in the password store. -r will remove a
            directory recursively, -f will not error out if the file or
            directory doesn’t exist.

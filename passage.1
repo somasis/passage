@@ -39,7 +39,7 @@ passage \- password store utilizing age for encryption
 .sp
 \fBpassage\fP init
 .sp
-\fBpassage\fP rm [\fB\-rf\fP] [\fIFILE/DIRECTORY\fP...]
+\fBpassage\fP rm [\fB\-rf\fP] \fIFILE/DIRECTORY\fP...
 .sp
 \fBpassage\fP show [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .SH "DESCRIPTION"
@@ -143,7 +143,7 @@ Create the password store directory. No arguments are taken, as the directory an
 defaults) should be set in the config or environment (see \fIENVIRONMENT\fP and \fIFILES\fP) anyway.
 .RE
 .sp
-\fBrm\fP [\fB\-rf\fP] [\fIFILE/DIRECTORY\fP...]
+\fBrm\fP [\fB\-rf\fP] \fIFILE/DIRECTORY\fP...
 .RS 4
 Delete a file/directory in the password store. \fB\-r\fP will remove a directory recursively, \fB\-f\fP
 will not error out if the file or directory doesn\(cqt exist.

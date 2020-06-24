@@ -14,7 +14,7 @@ passage - password store utilizing age for encryption
 
 *passage* init
 
-*passage* rm [*-rf*] [_FILE/DIRECTORY_...]
+*passage* rm [*-rf*] _FILE/DIRECTORY_...
 
 *passage* show [*-c*] [_FILE/DIRECTORY_...]
 
@@ -66,7 +66,7 @@ When providing a password file as an argument, do not include the ".age" suffix.
     Create the password store directory. No arguments are taken, as the directory and keys (if not
     defaults) should be set in the config or environment (see _ENVIRONMENT_ and _FILES_) anyway.
 
-*rm* [*-rf*] [_FILE/DIRECTORY_...]::
+*rm* [*-rf*] _FILE/DIRECTORY_...::
     Delete a file/directory in the password store. *-r* will remove a directory recursively, *-f*
     will not error out if the file or directory doesn't exist.
 

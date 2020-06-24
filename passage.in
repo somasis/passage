@@ -58,7 +58,7 @@ usage: passage convert [-v] [DIRECTORY...]
        passage edit FILE...
        passage generate [-f] [-l LENGTH] FILE
        passage init
-       passage rm [-rf] [FILE/DIRECTORY...]
+       passage rm [-rf] FILE/DIRECTORY...
        passage show [-c] [FILE/DIRECTORY...]
 EOF
 
