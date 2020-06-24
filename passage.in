@@ -4,24 +4,34 @@ set -ef
 
 ## Default variables
 
+# Cause variables declared in the environment to prevent any further assignments.
+
+[ -n "${PASSAGE_DIR}" ] \
+    && PASSAGE_DIR=$(readlink -f "${PASSAGE_DIR}") \
+    && readonly PASSAGE_DIR
+[ -n "${PASSAGE_KEY}" ]         && readonly PASSAGE_KEY
+[ -n "${PASSAGE_RECIPIENTS}" ]  && readonly PASSAGE_RECIPIENTS
+[ -n "${PASSWORD_STORE_DIR}" ]  && readonly PASSWORD_STORE_DIR
+
 : "${XDG_CONFIG_HOME:=${HOME}/.config}"
 : "${XDG_DATA_HOME:=${HOME}/.local/share}"
 
 # This may or may not be used, so don't try and check the source.
 # shellcheck disable=SC1090
-[ -f "${XDG_CONFIG_HOME}"/passage/passage.conf ] && . "${XDG_CONFIG_HOME}"/passage/passage.conf
+[ -f "${XDG_CONFIG_HOME}"/passage/passage.conf ] && \
+    . "${XDG_CONFIG_HOME}"/passage/passage.conf 2>/dev/null
 
 : "${PASSAGE_DIR:=${XDG_DATA_HOME}/passage}"
 : "${PASSAGE_KEY:=${XDG_CONFIG_HOME}/passage/privkey}"
 : "${PASSAGE_RECIPIENTS:=${XDG_CONFIG_HOME}/passage/recipients}"
 : "${PASSWORD_STORE_DIR:=${HOME}/.password-store}"
 
-# Only use a directory for temporary files that is guaranteed to be on memory.
-export TMPDIR=/dev/shm
-
 PASSAGE_DIR=$(readlink -f "${PASSAGE_DIR}")
 
-export PASSAGE_DIR PASSAGE_KEY PASSAGE_RECIPIENTS
+readonly PASSAGE_DIR PASSAGE_KEY PASSAGE_RECIPIENTS PASSWORD_STORE_DIR
+
+# Only use a directory for temporary files that is guaranteed to be on memory.
+export TMPDIR=/dev/shm
 
 ## Functions
 
