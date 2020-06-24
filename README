@@ -73,7 +73,7 @@ COMMANDS
        convert [-v] [DIRECTORY]
            Convert a pass(1) password store, DIRECTORY to a passage(1) store.
            All files are decrypted using gpg(1), and then reencrypted with
-           age(1).  If -v is specified, the gpg(1)-encrypterd files will be
+           age(1).  If -v is specified, the gpg(1)-encrypted files will be
            listed to standard error as they are converted.  If unspecified,
            DIRECTORY is PASSWORD_STORE_DIR (which is ~/.password-store by
            default).
