@@ -31,7 +31,7 @@ encrypt() {
     set --
     while read -r recipient; do
         set -- -r "${recipient}"
-    done < "${PASSAGE_RECIPIENT}"
+    done < "${PASSAGE_RECIPIENTS}"
 
     age "$@" -a "${file}"
 }
@@ -70,10 +70,10 @@ pretty_list() {
 
 passage_init() {
     mkdir -p "${PASSAGE_DIR}"
-    mkdir -p "$(dirname "${PASSAGE_KEY}")" "$(dirname "${PASSAGE_RECIPIENT_FILE}")"
+    mkdir -p "$(dirname "${PASSAGE_KEY}")" "$(dirname "${PASSAGE_RECIPIENTS}")"
     [ -f "${PASSAGE_KEY}" ] || age-keygen -o "${PASSAGE_KEY}"
-    [ -f "${PASSAGE_RECIPIENT}" ] \
-        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENT}"
+    [ -f "${PASSAGE_RECIPIENTS}" ] \
+        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENTS}"
 }
 
 passage_edit() {
@@ -262,8 +262,8 @@ case "${mode}" in
             printf 'error: key file "%s" either does not exist or is empty\n' "${PASSAGE_KEY}" >&2
             exit 4
         }
-        [ -s "${PASSAGE_RECIPIENT}" ] || {
-            printf 'error: recipient file "%s" either does not exist or is empty\n' "${PASSAGE_RECIPIENT}" >&2
+        [ -s "${PASSAGE_RECIPIENTS}" ] || {
+            printf 'error: recipient file "%s" either does not exist or is empty\n' "${PASSAGE_RECIPIENTS}" >&2
             exit 4
         }
 
