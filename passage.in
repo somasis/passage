@@ -2,6 +2,8 @@
 
 set -ef
 
+## Default variables
+
 : "${XDG_CONFIG_HOME:=${HOME}/.config}"
 : "${XDG_DATA_HOME:=${HOME}/.local/share}"
 
@@ -20,6 +22,8 @@ export TMPDIR=/dev/shm
 PASSAGE_DIR=$(readlink -f "${PASSAGE_DIR}")
 
 export PASSAGE_DIR PASSAGE_KEY PASSAGE_RECIPIENTS
+
+## Functions
 
 decrypt() {
     age -d -i "${PASSAGE_KEY}" "$@"
@@ -69,6 +73,7 @@ pretty_list() {
     done | sed 's|\.age$||; s|^\./||' | sort -d
 }
 
+## Modes
 
 passage_convert() {
     gpg_args="-q"
