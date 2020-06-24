@@ -69,42 +69,6 @@ pretty_list() {
     done | sed 's|\.age$||; s|^\./||' | sort -d
 }
 
-passage_init() {
-    mkdir -p "${PASSAGE_DIR}"
-    mkdir -p "$(dirname "${PASSAGE_KEY}")" "$(dirname "${PASSAGE_RECIPIENTS}")"
-    [ -f "${PASSAGE_KEY}" ] || age-keygen -o "${PASSAGE_KEY}"
-    [ -f "${PASSAGE_RECIPIENTS}" ] \
-        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENTS}"
-}
-
-passage_edit() {
-    while [ $# -gt 0 ]; do
-        is_beneath_store "$1"
-
-        if [ -f "${1}".age ]; then
-            temp=$(mktemp "${TMPDIR}"/passage.XXXXXX)
-            chmod 700 "${temp}"
-
-            decrypt "${1}".age > "${temp}"
-
-            "${EDITOR:-vi}" "${temp}" || {
-                printf \
-                    'error: editor died with error code %s, cleaning up decrypted file\n' "$?" >&2
-                rm -f "${temp}"
-            }
-
-            encrypt "${temp}" > "${1}".age
-            rm -f "${temp}"
-        else
-            "${EDITOR:-vi}" "${1}" || {
-                printf 'error: editor died with error code %s\n' "$?" >&2
-            }
-            encrypt "${1}" > "${1}".age
-        fi
-        shift
-    done
-
-}
 
 passage_convert() {
     gpg_args="-q"
@@ -154,6 +118,35 @@ passage_convert() {
     done
 }
 
+passage_edit() {
+    while [ $# -gt 0 ]; do
+        is_beneath_store "$1"
+
+        if [ -f "${1}".age ]; then
+            temp=$(mktemp "${TMPDIR}"/passage.XXXXXX)
+            chmod 700 "${temp}"
+
+            decrypt "${1}".age > "${temp}"
+
+            "${EDITOR:-vi}" "${temp}" || {
+                printf \
+                    'error: editor died with error code %s, cleaning up decrypted file\n' "$?" >&2
+                rm -f "${temp}"
+            }
+
+            encrypt "${temp}" > "${1}".age
+            rm -f "${temp}"
+        else
+            "${EDITOR:-vi}" "${1}" || {
+                printf 'error: editor died with error code %s\n' "$?" >&2
+            }
+            encrypt "${1}" > "${1}".age
+        fi
+        shift
+    done
+
+}
+
 passage_generate() {
     clobber=false
     length=24
@@ -201,6 +194,47 @@ passage_generate() {
     done
 }
 
+passage_init() {
+    mkdir -p "${PASSAGE_DIR}"
+    mkdir -p "$(dirname "${PASSAGE_KEY}")" "$(dirname "${PASSAGE_RECIPIENTS}")"
+    [ -f "${PASSAGE_KEY}" ] || age-keygen -o "${PASSAGE_KEY}"
+    [ -f "${PASSAGE_RECIPIENTS}" ] \
+        || sed '/^#.* age1.*/ !d; s/.*age1/age1/' "${PASSAGE_KEY}" > "${PASSAGE_RECIPIENTS}"
+}
+
+passage_rm() {
+    recurse=
+    force=
+    while getopts :rf arg >/dev/null 2>&1; do
+        case "${arg}" in
+            r)
+                recurse=true
+                ;;
+            f)
+                force=true
+                ;;
+            ?)
+                printf 'unknown argument -- %s\n' "${1}" >&2
+                usage
+                ;;
+        esac
+    done
+
+    shift $(( OPTIND - 1 ))
+
+    while [ $# -gt 0 ]; do
+        is_beneath_store "$1"
+
+        if [ -d "${1}" ]; then
+            rm ${recurse:+-r} ${force:+-f} "$1"
+        else
+            rm ${recurse:+-r} ${force:+-f} "$1".age
+        fi
+
+        shift
+    done
+}
+
 passage_show() {
     copy=false
     while getopts :c arg >/dev/null 2>&1; do
@@ -241,44 +275,11 @@ passage_show() {
     fi
 }
 
-passage_rm() {
-    recurse=
-    force=
-    while getopts :rf arg >/dev/null 2>&1; do
-        case "${arg}" in
-            r)
-                recurse=true
-                ;;
-            f)
-                force=true
-                ;;
-            ?)
-                printf 'unknown argument -- %s\n' "${1}" >&2
-                usage
-                ;;
-        esac
-    done
-
-    shift $(( OPTIND - 1 ))
-
-    while [ $# -gt 0 ]; do
-        is_beneath_store "$1"
-
-        if [ -d "${1}" ]; then
-            rm ${recurse:+-r} ${force:+-f} "$1"
-        else
-            rm ${recurse:+-r} ${force:+-f} "$1".age
-        fi
-
-        shift
-    done
-}
-
 shift $(( OPTIND - 1 ))
 
 mode=
 case "${1:-help}" in
-    init|convert|generate|edit|show|rm)
+    convert|edit|generate|init|rm|show)
         mode="${1}"
         ;;
     help) usage ;;
