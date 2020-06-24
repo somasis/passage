@@ -81,7 +81,7 @@ passage_edit() {
         is_beneath_store "$1"
 
         if [ -f "${1}".age ]; then
-            temp=$(mktemp passage.XXXXXX)
+            temp=$(mktemp "${TMPDIR}"/passage.XXXXXX)
             chmod 700 "${temp}"
 
             decrypt "${1}".age > "${temp}"
