@@ -280,7 +280,7 @@ passage_cp() {
     shift $(( OPTIND - 1 ))
 
     [ "$#" -eq 2 ] || {
-        printf 'error: missing destination file\n' >&2
+        printf 'error: missing destination path\n' >&2
         usage
     }
 
@@ -308,6 +308,11 @@ passage_ln() {
     done
 
     shift $(( OPTIND - 1 ))
+
+    [ "$#" -eq 2 ] || {
+        printf 'error: missing destination path\n' >&2
+        usage
+    }
 
     is_beneath_store "$@"
 
@@ -355,6 +360,11 @@ passage_mv() {
     done
 
     shift $(( OPTIND - 1 ))
+
+    [ "$#" -eq 2 ] || {
+        printf 'error: missing destination path\n' >&2
+        usage
+    }
 
     is_beneath_store "$@"
 
