@@ -368,8 +368,10 @@ passage_mv() {
 
     is_beneath_store "$@"
 
-    if [ -d "${1}" ]; then
+    if [ -d "${1}" ] && [ -d "${2}" ]; then
         mv ${force:+-f} "$1" "$2"
+    elif [ -e "${1}" ] && [ -d "${2}" ]; then
+        mv ${force:+-f} "$1".age "$2"
     else
         mv ${force:+-f} "$1".age "$2".age
     fi
