@@ -199,7 +199,12 @@ passage_generate() {
             exit 2
         fi
 
-        mkdir -p "${1%/*}"
+        [ -d "${1%/*}" ] || {
+            printf \
+                'error: password directory "%s" does not exist\n' \
+                "${1}" >&2
+            exit 5
+        }
 
         # NOTE: Using bs="${length}" count=1 rather than bs=1 count="${length}" saves syscalls.
         LC_ALL=C tr -cd '[:alnum:][:punct:]' </dev/urandom \
