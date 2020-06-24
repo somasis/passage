@@ -50,10 +50,10 @@ is_beneath_store() {
 
 usage() {
     cat >&2 <<EOF
-usage: passage show [-c] [FILE/DIRECTORY...]
-       passage convert [-v] [DIRECTORY...]
-       passage generate [-f] [-l LENGTH] FILE
+usage: passage convert [-v] [DIRECTORY...]
        passage edit FILE...
+       passage generate [-f] [-l LENGTH] FILE
+       passage show [-c] [FILE/DIRECTORY...]
 EOF
 
     exit 127

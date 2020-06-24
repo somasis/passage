@@ -2,12 +2,12 @@
 .\"     Title: passage
 .\"    Author: [see the "AUTHOR(S)" section]
 .\" Generator: Asciidoctor 2.0.10
-.\"      Date: 2020-06-23
+.\"      Date: 2020-06-24
 .\"    Manual: passage
 .\"    Source: passage 0
 .\"  Language: English
 .\"
-.TH "PASSAGE" "1" "2020-06-23" "passage 0" "passage"
+.TH "PASSAGE" "1" "2020-06-24" "passage 0" "passage"
 .ie \n(.g .ds Aq \(aq
 .el       .ds Aq '
 .ss \n[.ss] 0
@@ -31,13 +31,13 @@
 passage \- password store utilizing age for encryption
 .SH "SYNOPSIS"
 .sp
-\fBpassage\fP show [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
-.sp
 \fBpassage\fP convert [\fB\-v\fP] [\fIDIRECTORY\fP]
+.sp
+\fBpassage\fP edit \fIFILE\fP...
 .sp
 \fBpassage\fP generate [\fB\-f\fP] [\fB\-l\fP \fILENGTH\fP] \fIFILE\fP
 .sp
-\fBpassage\fP edit \fIFILE\fP...
+\fBpassage\fP show [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .SH "DESCRIPTION"
 .sp
 \fBpassage\fP is a password store. It allows for storing passwords within a directory, by default
@@ -110,18 +110,6 @@ Conforming to XDG specifications by default. pass(1) does not, though it can be 
 .sp
 When providing a password file as an argument, do not include the ".age" suffix.
 .sp
-\fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
-.RS 4
-Show a list of password files and directories, or show the contents of a password file.
-Directories are listed with a trailing slash (\fI/\fP) at the end of a line, files do not.
-Files have their ".age" suffix removed for readability.
-If a path to a password file is given, the contents of that file are printed to standard output.
-If \fB\-c\fP is specified and a password file is given, the contents are copied to your X clipboard
-using xsel(1), rather than being printed, and then the clipboard is cleared after 45 seconds.
-If you provide a path to a password directory, the directory is listed.
-If you provide no path of any sort, the entire password store is listed.
-.RE
-.sp
 \fBconvert\fP [\fB\-v\fP] [\fIDIRECTORY\fP]
 .RS 4
 Convert a pass(1) password store, \fIDIRECTORY\fP to a passage(1) store.
@@ -129,6 +117,12 @@ All files are decrypted using gpg(1), and then reencrypted with age(1).
 If \fB\-v\fP is specified, the gpg(1)\-encrypterd files will be listed to standard error
 as they are converted.
 If unspecified, \fIDIRECTORY\fP is \fIPASSWORD_STORE_DIR\fP (which is \fI~/.password\-store\fP by default).
+.RE
+.sp
+\fBedit\fP \fIFILE\fP
+.RS 4
+Decrypt and open \fIFILE\fP in your editor. The decrypted file is written to a temporary file with
+owner\-only read and write permissions, and then written back to the original location.
 .RE
 .sp
 \fBgenerate\fP [\fB\-f\fP] [\fB\-l\fP \fILENGTH\fP] \fIFILE\fP
@@ -141,8 +135,18 @@ If \fB\-f\fP is specified, it will.
 .sp
 \fBedit\fP \fIFILE\fP
 .RS 4
-Decrypt and open \fIFILE\fP in your editor. The decrypted file is written to a temporary file with
-owner\-only read and write permissions, and then written back to the original location.
+.RE
+.sp
+\fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
+.RS 4
+Show a list of password files and directories, or show the contents of a password file.
+Directories are listed with a trailing slash (\fI/\fP) at the end of a line, files do not.
+Files have their ".age" suffix removed for readability.
+If a path to a password file is given, the contents of that file are printed to standard output.
+If \fB\-c\fP is specified and a password file is given, the contents are copied to your X clipboard
+using xsel(1), rather than being printed, and then the clipboard is cleared after 45 seconds.
+If you provide a path to a password directory, the directory is listed.
+If you provide no path of any sort, the entire password store is listed.
 .RE
 .SH "ENVIRONMENT"
 .sp
