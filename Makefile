@@ -28,7 +28,6 @@ all: FRC ${BINS} ${MANS}
 dev: FRC README all lint
 
 bin: FRC ${BINS}
-lib: FRC ${LIBS}
 man: FRC ${MANS}
 html: FRC ${HTMLS}
 
@@ -75,13 +74,13 @@ install: FRC all
 	for man1 in ${MAN1}; do install -m0644 $${man1} ${DESTDIR}${man1dir}; done
 
 clean: FRC
-	rm -f ${BINS} ${LIBS} ${MANS} ${HTMLS}
+	rm -f ${BINS} ${MANS} ${HTMLS}
 
 .DELETE_ON_ERROR: README
 README: passage.1
 	man ./$? | col -bx > $@
 
-lint: FRC ${BINS} ${LIBS}
-	${SHELLCHECK} ${BINS} ${LIBS}
+lint: FRC ${BINS}
+	${SHELLCHECK} ${BINS}
 
 FRC:
