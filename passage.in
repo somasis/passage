@@ -187,13 +187,13 @@ passage_generate() {
             exit 2
         fi
 
+        mkdir -p "${1%/*}"
+
         # NOTE: Using bs="${length}" count=1 rather than bs=1 count="${length}" saves syscalls.
-        temp=$(mktemp passage.XXXXXX)
-        chmod 600 "${temp}"
         LC_ALL=C tr -cd '[:alnum:][:punct:]' </dev/urandom \
-            | dd bs="${length}" count=1 2>/dev/null > "${temp}"
-        cat "${temp}" > "${1}"
-        rm -f "${temp}"
+            | dd bs="${length}" count=1 2>/dev/null | encrypt > "${1}".age
+
+        shift
     done
 }
 
