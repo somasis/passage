@@ -170,7 +170,7 @@ passage_generate() {
                 length="${OPTARG}"
                 ;;
             ?)
-                printf 'unknown argument -- %s\n' "${1}" >&2
+                printf 'unknown argument -- %s\n' "${OPTARG}" >&2
                 usage
                 ;;
         esac
@@ -221,7 +221,7 @@ passage_show() {
                 copy=true
                 ;;
             ?)
-                printf 'unknown argument -- %s\n' "${1}" >&2
+                printf 'unknown argument -- %s\n' "${OPTARG}" >&2
                 usage
                 ;;
         esac
