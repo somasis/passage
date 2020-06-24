@@ -46,6 +46,7 @@ is_beneath_store() {
             "${PASSAGE_DIR}"/*|"${PASSAGE_DIR}") : ;;
             *)
                 printf 'error: file path "%s" is not within the password store\n' "${1}" >&2
+                exit 4
                 ;;
         esac
         shift
