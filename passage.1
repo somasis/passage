@@ -116,6 +116,19 @@ than generating a new password, should just be done through a text editor.
 .  sp -1
 .  IP \(bu 2.3
 .\}
+Don\(cqt automate much by default, and don\(cqt duplicate functionality; for example, this means that
+unlike pass(1), the generate command does \fBnot\fP copy to the clipboard with a switch, because
+\fBshow \-c\fP will do that just fine. Directories are also not automatically created when necessray.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.  sp -1
+.  IP \(bu 2.3
+.\}
 Conforming to XDG specifications by default. pass(1) does not, though it can be made to.
 .RE
 .SH "COMMANDS"

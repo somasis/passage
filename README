@@ -52,6 +52,12 @@ DESCRIPTION
            editing operations, other than generating a new password, should
            just be done through a text editor.
 
+       •   Don’t automate much by default, and don’t duplicate functionality;
+           for example, this means that unlike pass(1), the generate command
+           does not copy to the clipboard with a switch, because show -c will
+           do that just fine. Directories are also not automatically created
+           when necessray.
+
        •   Conforming to XDG specifications by default. pass(1) does not,
            though it can be made to.
 
