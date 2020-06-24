@@ -10,7 +10,7 @@ SYNOPSIS
 
        passage convert [-v] [DIRECTORY]
 
-       passage generate [-l LENGTH] FILE
+       passage generate [-f] [-l LENGTH] FILE
 
        passage edit FILE...
 
@@ -68,11 +68,12 @@ COMMANDS
            DIRECTORY is PASSWORD_STORE_DIR (which is ~/.password-store by
            default).
 
-       generate [-l LENGTH] FILE
+       generate [-f] [-l LENGTH] FILE
            Generate a password of LENGTH characters long to FILE. If a custom
            LENGTH is unspecified, the default length is 24 characters long.
            The password contains alphabetical, numeric, and punctuation
-           symbols.
+           symbols. If the password file already exists, it will not overwrite
+           it.  If -f is specified, it will.
 
        edit FILE
            Decrypt and open FILE in your editor. The decrypted file is written

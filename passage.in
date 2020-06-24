@@ -29,7 +29,7 @@ usage() {
     cat >&2 <<EOF
 usage: passage show [-c] [FILE/DIRECTORY...]
        passage convert [-v] [DIRECTORY...]
-       passage generate [-l LENGTH] FILE
+       passage generate [-f] [-l LENGTH] FILE
        passage edit FILE...
 EOF
 

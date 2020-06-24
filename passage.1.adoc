@@ -10,7 +10,7 @@ passage - password store utilizing age for encryption
 
 *passage* convert [*-v*] [_DIRECTORY_]
 
-*passage* generate [*-l* _LENGTH_] _FILE_
+*passage* generate [*-f*] [*-l* _LENGTH_] _FILE_
 
 *passage* edit _FILE_...
 
@@ -58,10 +58,11 @@ When providing a password file as an argument, do not include the ".age" suffix.
     as they are converted.
     If unspecified, _DIRECTORY_ is _PASSWORD_STORE_DIR_ (which is _~/.password-store_ by default).
 
-*generate* [*-l* _LENGTH_] _FILE_::
+*generate* [*-f*] [*-l* _LENGTH_] _FILE_::
     Generate a password of _LENGTH_ characters long to _FILE_. If a custom _LENGTH_ is unspecified,
     the default length is 24 characters long. The password contains alphabetical, numeric, and
-    punctuation symbols.
+    punctuation symbols. If the password file already exists, it will not overwrite it.
+    If *-f* is specified, it will.
 
 *edit* _FILE_::
     Decrypt and open _FILE_ in your editor. The decrypted file is written to a temporary file with
