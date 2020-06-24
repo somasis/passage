@@ -17,6 +17,8 @@ set -e
 # Only use a directory for temporary files that is guaranteed to be on memory.
 export TMPDIR=/dev/shm
 
+PASSAGE_DIR=$(readlink -f "${PASSAGE_DIR}")
+
 export PASSAGE_DIR PASSAGE_KEY PASSAGE_RECIPIENTS
 
 decrypt() {
@@ -32,6 +34,18 @@ encrypt() {
     done < "${PASSAGE_RECIPIENT}"
 
     age "$@" -a "${file}"
+}
+
+is_beneath_store() {
+    while [ "$#" -gt 0 ]; do
+        case "$(readlink -f "${1}")" in
+            "${PASSAGE_DIR}"/*|"${PASSAGE_DIR}") : ;;
+            *)
+                printf 'error: file path "%s" is not within the password store\n' "${1}" >&2
+                ;;
+        esac
+        shift
+    done
 }
 
 usage() {
@@ -64,6 +78,8 @@ passage_init() {
 
 passage_edit() {
     while [ $# -gt 0 ]; do
+        is_beneath_store "$1"
+
         if [ -f "${1}".age ]; then
             temp=$(mktemp passage.XXXXXX)
             chmod 700 "${temp}"
@@ -162,6 +178,8 @@ passage_generate() {
     esac
 
     while [ $# -gt 0 ]; do
+        is_beneath_store "$1"
+
         if [ -e "${1}" ] && ! "${clobber}"; then
             printf \
                 'error: password file "%s" already exists, refusing to clobber without -f\n' \
@@ -199,6 +217,8 @@ passage_show() {
         pretty_list "$@"
         return $?
     fi
+
+    is_beneath_store "$1"
 
     if [ -f "${1}".age ]; then
         if "${copy}"; then
