@@ -113,9 +113,12 @@ passage_convert() {
     set -f
 
     # Convert all gpg-encrypted files to age-encrypted files.
+    #
+    # The lack of word splitting on ${gpg_args} is necessary.
+    # shellcheck disable=SC2086
     find . -name '*.gpg' -type f -not -type l | while read -r file; do
         "${verbose}" && printf '%s\n' "${file}" >&2
-        gpg "${gpg_args}" --batch -d "${file}" | encrypt > "${file%.gpg}.age"
+        gpg ${gpg_args} --batch -d "${file}" | encrypt > "${file%.gpg}.age"
         rm -f "${file}"
     done
 
