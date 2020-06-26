@@ -56,7 +56,7 @@ DESCRIPTION
            for example, this means that unlike pass(1), the generate command
            does not copy to the clipboard with a switch, because show -c will
            do that just fine. Directories are also not automatically created
-           when necessray.
+           when necessary.
 
        •   Conforming to XDG specifications by default. pass(1) does not,
            though it can be made to.
@@ -99,7 +99,7 @@ COMMANDS
            Create a symbolic link at DESTINATION that resolves to TARGET. -f
            will allow overwriting existing files and links.
 
-       mkdir [-p] DIRECTORY
+       mkdir [-p] DIRECTORY...
            Create a directory named DIRECTORY. -p will create all parents of
            the directory if they do not exist.
 
@@ -115,7 +115,7 @@ COMMANDS
        show [-c] [FILE/DIRECTORY...]
            Show a list of password files and directories, or show the contents
            of a password file.  Directories are listed with a trailing slash
-           (/) at the end of a line, files do not.  Files have their ".age"
+           (/) at the end of a line, files are not.  Files have their ".age"
            suffix removed for readability.  If a path to a password file is
            given, the contents of that file are printed to standard output.
            If -c is specified and a password file is given, the contents are
@@ -200,4 +200,4 @@ LICENSE
 
 
 
-passage 0                         2020-06-24                        PASSAGE(1)
+passage 0                         2020-06-26                        PASSAGE(1)

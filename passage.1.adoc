@@ -53,7 +53,7 @@ with deviation where pass(1) seems inconsistent or prone to feature-creep.
 
 * Don't automate much by default, and don't duplicate functionality; for example, this means that
   unlike pass(1), the generate command does *not* copy to the clipboard with a switch, because
-  *show -c* will do that just fine. Directories are also not automatically created when necessray.
+  *show -c* will do that just fine. Directories are also not automatically created when necessary.
 
 * Conforming to XDG specifications by default. pass(1) does not, though it can be made to.
 
@@ -90,7 +90,7 @@ When providing a password file as an argument, do not include the ".age" suffix.
     Create a symbolic link at _DESTINATION_ that resolves to _TARGET_. *-f* will allow overwriting
     existing files and links.
 
-*mkdir* [*-p*] _DIRECTORY_::
+*mkdir* [*-p*] _DIRECTORY_...::
     Create a directory named _DIRECTORY_. *-p* will create all parents of the directory if they do
     not exist.
 
@@ -103,7 +103,7 @@ When providing a password file as an argument, do not include the ".age" suffix.
 
 *show* [*-c*] [_FILE/DIRECTORY_...]::
     Show a list of password files and directories, or show the contents of a password file.
-    Directories are listed with a trailing slash (_/_) at the end of a line, files do not.
+    Directories are listed with a trailing slash (_/_) at the end of a line, files are not.
     Files have their ".age" suffix removed for readability.
     If a path to a password file is given, the contents of that file are printed to standard output.
     If *-c* is specified and a password file is given, the contents are copied to your X clipboard

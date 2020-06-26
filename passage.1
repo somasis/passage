@@ -2,12 +2,12 @@
 .\"     Title: passage
 .\"    Author: [see the "AUTHOR(S)" section]
 .\" Generator: Asciidoctor 2.0.10
-.\"      Date: 2020-06-24
+.\"      Date: 2020-06-26
 .\"    Manual: passage
 .\"    Source: passage 0
 .\"  Language: English
 .\"
-.TH "PASSAGE" "1" "2020-06-24" "passage 0" "passage"
+.TH "PASSAGE" "1" "2020-06-26" "passage 0" "passage"
 .ie \n(.g .ds Aq \(aq
 .el       .ds Aq '
 .ss \n[.ss] 0
@@ -118,7 +118,7 @@ than generating a new password, should just be done through a text editor.
 .\}
 Don\(cqt automate much by default, and don\(cqt duplicate functionality; for example, this means that
 unlike pass(1), the generate command does \fBnot\fP copy to the clipboard with a switch, because
-\fBshow \-c\fP will do that just fine. Directories are also not automatically created when necessray.
+\fBshow \-c\fP will do that just fine. Directories are also not automatically created when necessary.
 .RE
 .sp
 .RS 4
@@ -176,7 +176,7 @@ Create a symbolic link at \fIDESTINATION\fP that resolves to \fITARGET\fP. \fB\-
 existing files and links.
 .RE
 .sp
-\fBmkdir\fP [\fB\-p\fP] \fIDIRECTORY\fP
+\fBmkdir\fP [\fB\-p\fP] \fIDIRECTORY\fP...
 .RS 4
 Create a directory named \fIDIRECTORY\fP. \fB\-p\fP will create all parents of the directory if they do
 not exist.
@@ -196,7 +196,7 @@ doesn\(cqt exist. \fB\-r\fP will remove a directory recursively.
 \fBshow\fP [\fB\-c\fP] [\fIFILE/DIRECTORY\fP...]
 .RS 4
 Show a list of password files and directories, or show the contents of a password file.
-Directories are listed with a trailing slash (\fI/\fP) at the end of a line, files do not.
+Directories are listed with a trailing slash (\fI/\fP) at the end of a line, files are not.
 Files have their ".age" suffix removed for readability.
 If a path to a password file is given, the contents of that file are printed to standard output.
 If \fB\-c\fP is specified and a password file is given, the contents are copied to your X clipboard
