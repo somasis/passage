@@ -54,7 +54,7 @@ is_beneath_store() {
     while [ "$#" -gt 0 ]; do
         path=$(printf '%s' "${1}" | sed -E 's|^/+||')
 
-        case "$(readlink -f "${path}")" in
+        case "$(readlink -f "${PASSAGE_DIR}"/"${1}")" in
             "${PASSAGE_DIR}"/*|"${PASSAGE_DIR}") : ;;
             *)
                 printf 'error: path "%s" is not within the password store\n' "${path}" >&2
@@ -204,14 +204,14 @@ passage_generate() {
     while [ $# -gt 0 ]; do
         is_beneath_store "$1"
 
-        if [ -e "${1}" ] && ! "${clobber}"; then
+        if [ -e "${PASSAGE_DIR}"/"${1}" ] && ! "${clobber}"; then
             printf \
                 'error: password file "%s" already exists, refusing to clobber without -f\n' \
                 "${1}" >&2
             exit 2
         fi
 
-        [ -d "${1%/*}" ] || {
+        [ -d "${PASSAGE_DIR}"/"${1%/*}" ] || {
             printf \
                 'error: password directory "%s" does not exist\n' \
                 "${1}" >&2
@@ -220,7 +220,7 @@ passage_generate() {
 
         # NOTE: Using bs="${length}" count=1 rather than bs=1 count="${length}" saves syscalls.
         LC_ALL=C tr -cd '[:alnum:][:punct:]' </dev/urandom \
-            | dd bs="${length}" count=1 2>/dev/null | encrypt > "${1}".age
+            | dd bs="${length}" count=1 2>/dev/null | encrypt > "${PASSAGE_DIR}"/"${1}".age
 
         shift
     done
@@ -257,16 +257,16 @@ passage_show() {
 
     is_beneath_store "$1".age
 
-    if [ -f "${1}".age ]; then
+    if [ -f "${PASSAGE_DIR}"/"${1}".age ]; then
         if "${copy}"; then
-            decrypt "${1}".age | xsel -ib
+            decrypt "${PASSAGE_DIR}"/"${1}".age | xsel -ib
             printf 'Password copied to clipboard. Clipboard will be cleared in 45 seconds.\n' >&2
             (
                 sleep 45
                 xsel -cb
             ) &
         else
-            decrypt "${1}".age
+            decrypt "${PASSAGE_DIR}"/"${1}".age
         fi
     else
         printf 'error: password file "%s" does not exist\n' "${1}" >&2
@@ -304,9 +304,9 @@ passage_cp() {
     is_beneath_store "$1"
 
     if [ -d "${1}" ]; then
-        cp ${force:+-f} ${recurse:+-r} "$1" "$2"
+        cp ${force:+-f} ${recurse:+-r} "${PASSAGE_DIR}"/"$1" "${PASSAGE_DIR}"/"$2"
     else
-        cp ${force:+-f} ${recurse:+-r} "$1".age "$2".age
+        cp ${force:+-f} ${recurse:+-r} "${PASSAGE_DIR}"/"$1".age "${PASSAGE_DIR}"/"$2".age
     fi
 }
 
@@ -334,9 +334,9 @@ passage_ln() {
     is_beneath_store "$@"
 
     if [ -d "${1}" ]; then
-        ln -s ${force:+-f} "$1" "$2"
+        ln -s ${force:+-f} "$1" "${PASSAGE_DIR}"/"$2"
     else
-        ln -s ${force:+-f} "$1".age "$2".age
+        ln -s ${force:+-f} "$1".age "${PASSAGE_DIR}"/"$2".age
     fi
     shift
 }
@@ -359,7 +359,11 @@ passage_mkdir() {
 
     is_beneath_store "$@"
 
-    mkdir ${parents:+-p} "$@"
+    while [ $# -gt 0 ]; do
+        mkdir ${parents:+-p} "${PASSAGE_DIR}"/"${1}"
+
+        shift
+    done
 }
 
 passage_mv() {
@@ -385,12 +389,12 @@ passage_mv() {
 
     is_beneath_store "$@"
 
-    if [ -d "${1}" ] && [ -d "${2}" ]; then
-        mv ${force:+-f} "$1" "$2"
-    elif [ -e "${1}" ] && [ -d "${2}" ]; then
-        mv ${force:+-f} "$1".age "$2"
+    if [ -d "${PASSAGE_DIR}"/"${1}" ] && [ -d "${PASSAGE_DIR}"/"${2}" ]; then
+        mv ${force:+-f} "${PASSAGE_DIR}"/"$1" "${PASSAGE_DIR}"/"$2"
+    elif [ -e "${PASSAGE_DIR}"/"${1}" ] && [ -d "${PASSAGE_DIR}"/"${2}" ]; then
+        mv ${force:+-f} "${PASSAGE_DIR}"/"$1".age "${PASSAGE_DIR}"/"$2"
     else
-        mv ${force:+-f} "$1".age "$2".age
+        mv ${force:+-f} "${PASSAGE_DIR}"/"$1".age "${PASSAGE_DIR}"/"$2".age
     fi
 }
 
@@ -418,9 +422,9 @@ passage_rm() {
         is_beneath_store "$1"
 
         if [ -d "${1}" ]; then
-            rm ${force:+-f} ${recurse:+-r} "$1"
+            rm ${force:+-f} ${recurse:+-r} "${PASSAGE_DIR}"/"$1"
         else
-            rm ${force:+-f} ${recurse:+-r} "$1".age
+            rm ${force:+-f} ${recurse:+-r} "${PASSAGE_DIR}"/"$1".age
         fi
 
         shift
