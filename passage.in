@@ -52,10 +52,12 @@ encrypt() {
 
 is_beneath_store() {
     while [ "$#" -gt 0 ]; do
-        case "$(readlink -f "${1}")" in
+        path=$(printf '%s' "${1}" | sed -E 's|^/+||')
+
+        case "$(readlink -f "${path}")" in
             "${PASSAGE_DIR}"/*|"${PASSAGE_DIR}") : ;;
             *)
-                printf 'error: file path "%s" is not within the password store\n' "${1}" >&2
+                printf 'error: path "%s" is not within the password store\n' "${path}" >&2
                 exit 4
                 ;;
         esac
