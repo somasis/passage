@@ -148,26 +148,19 @@ passage_edit() {
     while [ $# -gt 0 ]; do
         is_beneath_store "$1"
 
-        if [ -f "${1}".age ]; then
-            temp=$(mktemp "${TMPDIR}"/passage.XXXXXX)
-            chmod 700 "${temp}"
+        temp=$(mktemp "${TMPDIR}"/passage.XXXXXX)
+        chmod 700 "${temp}"
 
-            decrypt "${1}".age > "${temp}"
+        [ -f "${PASSAGE_DIR}"/"${1}".age ] && decrypt "${1}".age > "${temp}"
 
-            "${EDITOR:-vi}" "${temp}" || {
-                printf \
-                    'error: editor died with error code %s, cleaning up decrypted file\n' "$?" >&2
-                rm -f "${temp}"
-            }
-
-            encrypt "${temp}" > "${1}".age
+        "${EDITOR:-vi}" "${temp}" || {
+            printf \
+                'error: editor died with error code %s, cleaning up decrypted file\n' "$?" >&2
             rm -f "${temp}"
-        else
-            "${EDITOR:-vi}" "${1}" || {
-                printf 'error: editor died with error code %s\n' "$?" >&2
-            }
-            encrypt "${1}" > "${1}".age
-        fi
+        }
+
+        encrypt "${temp}" > "${PASSAGE_DIR}"/"${1}".age
+        rm -f "${temp}"
 
         shift
     done
