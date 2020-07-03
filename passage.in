@@ -86,7 +86,7 @@ pretty_list() {
         find ./"${1}" -type d \( -not -name '.*' \) | sed -E 's|$|/|; s|/+$|/|'
         find ./"${1}" \( -type f -name '*.age' \)
         shift
-    done | sed -E 's|\.age$||; s|^(\./)+||g' | sort -d
+    done | sed -E 's|\.age$||; s|^(\./)+||g; s|^/+||' | sort -d
 }
 
 ## Modes
